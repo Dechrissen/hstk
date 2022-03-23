@@ -12,7 +12,7 @@ x = raw_content
 
 # replace instances of 'Send a chat', etc. with empty string
 for filter in filters:
-    x = raw_content.replace(filter, '')
+    x = x.replace(filter, '')
 
 # split into a list at newline characters
 lines = x.split('\n')
