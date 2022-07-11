@@ -1,7 +1,5 @@
 from Functions import *
 
-file = './data/test.png'
+directory = './data/snaps/'
 
-tweaked_image = tweakImage(file)
-text = imageToText(tweaked_image)
-print(text)
+convertDirectory(directory)

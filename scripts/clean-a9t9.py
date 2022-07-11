@@ -2,6 +2,8 @@
 # file 'cleaned.txt' (e.g. no Snapchat-specific text, no stray newlines, etc.),
 # with one headline snap per line.
 
+print('Cleaning a9t9 output file...')
+
 # read in a9t9 output as a full string
 with open("a9t9.txt", "r") as f:
     raw_content = f.read()
@@ -31,6 +33,9 @@ x = x.split(' |')
 
 # write each line to a file 'cleaned.txt'
 # one headline snap per line
-with open("cleaned.txt", "w") as f:
+with open('cleaned.txt', 'w', encoding='utf-8') as f:
     for line in x:
         f.write(line + '\n')
+
+print('Done.')
+print('Cleaned output file is available at /scripts/cleaned.txt.')

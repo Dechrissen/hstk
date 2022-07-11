@@ -1,4 +1,5 @@
 import pytesseract
+import os
 from PIL import Image, ImageOps, ImageEnhance
 
 
@@ -66,3 +67,47 @@ def imageToText(tweaked_image):
     cleaned_text = text.replace('\n', ' ')
 
     return cleaned_text
+
+def convertDirectory(dir):
+    """
+    Iterates over a directory of images (headline snaps) and runs them through
+    the crop & text conversion functions. The resulting converted headline
+    snaps will be appended to a text file 'output.txt', one per line.
+
+    args
+        directory : the directory containing the images to be converted
+
+    returns
+        null
+    """
+
+    print("Converting headline snaps...")
+
+    # intermediate list to store converted images before they're written to file
+    converted_snaps = []
+
+    # a count for progress output in console
+    count = 0
+
+    # loop over the raw images, running them through our conversion functions
+    for filename in os.listdir(dir):
+        # convert each image into text
+        file = os.path.join(dir, filename)
+        tweaked_image = tweakImage(file)
+        text = imageToText(tweaked_image)
+        # add image (as text) to intermediate list converted_snaps
+        converted_snaps.append(text + '\n')
+        # progress output
+        count += 1
+        print('Converted ' + str(count))
+
+    print('Done.')
+    print('Successfully converted', str(count), 'headline snaps into text.')
+    print('Creating output file...')
+
+    # write headline snaps stored in intermediate list to final output file
+    with open('./data/output.txt', 'w', encoding='utf-8') as output_file:
+        output_file.writelines(converted_snaps)
+
+    print('Done.')
+    print('Output is available at /data/output.txt.')
