@@ -1,6 +1,6 @@
 # hsdb
 
-This project contains a local database of Headline Snaps as text, command-line tools to interface with the database, as well as various OCR scripts used to convert the original raw Headline Snap image files into text. There also exists a pipeline that can be invoked to add _new_ Headline Snaps into the database.
+This project contains a local database of Headline Snaps ([What are Headline Snaps?](./assets/WHAT.md)) as text, command-line tools to interface with the database, as well as various OCR scripts used to convert the original raw Headline Snap image files into text. There also exists a pipeline that can be invoked to add _new_ Headline Snaps into the database.
 
 ## Table of Contents
 
