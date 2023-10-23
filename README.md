@@ -1,11 +1,12 @@
 # hsdb
 
-This project contains a local database of Headline Snaps as text, command-line tools to interface with the database, as well as various OCR scripts used to convert the original raw Headline Snap image files into text. There also exists a pipeline that can be invoked to add _new_ Headline Snaps into the database, after which the remote repository should be updated by the user.
+This project contains a local database of Headline Snaps as text, command-line tools to interface with the database, as well as various OCR scripts used to convert the original raw Headline Snap image files into text. There also exists a pipeline that can be invoked to add _new_ Headline Snaps into the database.
 
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)
 - [Converting legacy headline snaps](#using-a9t9-to-convert-legacy-or-non-compliant-headline-snaps)
+- [Installing Tessertact executable on Windows](#installing-tesseract-executable-on-windows)
 
 ## Prerequisites
 
@@ -28,6 +29,10 @@ python clean-a9t9.py
 ```
 
 The cleaned file will be output to `/hsdb/scripts/cleaned.txt`.
+
+## Installing Tesseract executable on Windows
+
+The link to the installer for the Tesseract executable on Windows can be found [here](https://github.com/UB-Mannheim/tesseract/wiki).
 
 (need to detail what to do with the output file now)
 

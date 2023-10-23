@@ -1,7 +1,7 @@
 import pytesseract
 import os
 from PIL import Image, ImageOps, ImageEnhance
-
+import sqlite3
 
 def tweakImage(image_file):
     """
@@ -111,3 +111,59 @@ def convertDirectory(dir):
 
     print('Done.')
     print('Output is available at /data/output.txt.')
+
+def createDatabase(db_file_path):
+    """
+    Creates an sqlite database file for headline snaps, with all necessary columns.
+    """
+    path_to_db_dir = './data/db'
+    print("Checking for directory 'db' ...")
+    if not os.path.exists(path_to_db_dir):
+        print("Directory 'db' being created ...")
+        os.makedirs(path_to_db_dir)
+        print('Done.')
+    else:
+        print("Directory 'db' already exists")
+
+    con = None
+    try:
+        con = sqlite3.connect(db_file_path)
+        print("Database created successfully.")
+    except sqlite3.Error as e:
+        print(e)
+        return
+
+    cur = con.cursor()
+    cur.execute("CREATE TABLE headlines(text, author, id)")
+
+    # test if the table exists in the built-in sqlite_master
+    #res = cur.execute("SELECT name FROM sqlite_master")
+    #print(res.fetchone())
+
+    con.close()
+
+def addToDatabase(db_file_path):
+    # connect to the database
+    try:
+        con = sqlite3.connect(db_file_path)
+    except sqlite3.Error as e:
+        print(e)
+        return
+
+    cur = con.cursor()
+    
+    # add values to the table
+    cur.execute("""
+    INSERT INTO headlines VALUES
+        ('sample text 1', 'derek', 0001),
+        ('sample text 2', 'evan', 0002)
+    """)
+    
+    # commit the transaction on the connection object
+    con.commit()
+    
+    # test that the values were added to the table
+    res = cur.execute("SELECT text FROM headlines")
+    print(res.fetchall())
+
+    con.close()
