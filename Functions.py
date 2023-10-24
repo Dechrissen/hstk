@@ -2,6 +2,7 @@ import pytesseract
 import os
 from PIL import Image, ImageOps, ImageEnhance
 import sqlite3
+import platform
 
 
 def initialize():
@@ -69,11 +70,16 @@ def imageToText(tweaked_image):
     returns
         cleaned_text : the headline snap as a string
     """
-
-    # Windows only: set the location of the tesseract executable
-    # this also needs to be present in your PATH (both Windows and Linux)
-    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-
+    # tesseract needs to be present in your PATH (both Windows and Linux)
+    # check current platform
+    if platform.system() == 'Linux':
+        pass
+    elif platform.system() == 'Windows':
+        # Windows only: set the location of the tesseract executable
+        pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+    else:
+        print("Your operating system is not supported.")
+        quit()
     # set the config for the conversion (not sure what this does)
     config = ("--psm 6")
 
