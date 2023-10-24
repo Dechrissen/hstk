@@ -3,9 +3,27 @@ import os
 from PIL import Image, ImageOps, ImageEnhance
 import sqlite3
 
-def tweakImage(image_file):
+
+def initialize():
+    """Initializes the project for use, creating local directories, etc.
+
+    args
+        null
+
+    returns
+        null
     """
-    Crops (removes top and bottom portions) and inverts contrast (into black
+    print("Performing first-time setup ...")
+
+    # create the local directories (which should not exist on remote)
+    dirs = ['./data/db', './data/src/raw', './data/src/text']
+    for dir in dirs:
+        createDirectory(dir)
+
+    print("Done.")
+
+def tweakImage(image_file):
+    """Crops (removes top and bottom portions) and inverts contrast (into black
     text on white background) for a raw headline snap image.
 
     args
@@ -43,8 +61,7 @@ def tweakImage(image_file):
     return cropped_image
 
 def imageToText(tweaked_image):
-    """
-    Converts a tweaked headline snap image into text.
+    """Converts a tweaked headline snap image into text.
 
     args
         tweaked_image : a cropped and contrast-inverted headline snap
@@ -69,13 +86,12 @@ def imageToText(tweaked_image):
     return cleaned_text
 
 def convertDirectory(dir):
-    """
-    Iterates over a directory of images (headline snaps) and runs them through
+    """Iterates over a directory of images (headline snaps) and runs them through
     the crop & text conversion functions. The resulting converted headline
     snaps will be appended to a text file 'output.txt', one per line.
 
     args
-        directory : the directory containing the images to be converted
+        dir : the directory containing the images to be converted
 
     returns
         null
@@ -113,17 +129,16 @@ def convertDirectory(dir):
     print('Output is available at /data/output.txt.')
 
 def createDatabase(db_file_path):
-    """
-    Creates an sqlite database file for headline snaps, with all necessary columns.
+    """Creates an sqlite database file for headline snaps, with all necessary columns.
+
+    args
+        db_file_path : the path where the sqlite database file will exist
+
+    returns
+        null
     """
     path_to_db_dir = './data/db'
-    print("Checking for directory 'db' ...")
-    if not os.path.exists(path_to_db_dir):
-        print("Directory 'db' being created ...")
-        os.makedirs(path_to_db_dir)
-        print('Done.')
-    else:
-        print("Directory 'db' already exists")
+    createDirectory(path_to_db_dir)
 
     con = None
     try:
@@ -143,6 +158,8 @@ def createDatabase(db_file_path):
     con.close()
 
 def addToDatabase(db_file_path):
+    """placeholder
+    """
     # connect to the database
     try:
         con = sqlite3.connect(db_file_path)
@@ -151,19 +168,35 @@ def addToDatabase(db_file_path):
         return
 
     cur = con.cursor()
-    
+
     # add values to the table
     cur.execute("""
     INSERT INTO headlines VALUES
         ('sample text 1', 'derek', 0001),
         ('sample text 2', 'evan', 0002)
     """)
-    
+
     # commit the transaction on the connection object
     con.commit()
-    
+
     # test that the values were added to the table
     res = cur.execute("SELECT text FROM headlines")
     print(res.fetchall())
 
     con.close()
+
+def createDirectory(path):
+    """Creates a directory.
+
+    args
+        path : the path where the directory will exist
+
+    returns
+        null
+    """
+    if not os.path.exists(path):
+        print("Directory '{0}' being created ...".format(os.path.basename(path)))
+        os.makedirs(path)
+        print('OK')
+    else:
+        pass
