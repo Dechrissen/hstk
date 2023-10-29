@@ -22,6 +22,7 @@ def initialize():
         createDirectory(dir)
 
     print("Done.")
+    return
 
 def tweakImage(image_file):
     """Crops (removes top and bottom portions) and inverts contrast (into black
@@ -133,6 +134,7 @@ def convertDirectory(dir):
 
     print('Done.')
     print('Output is available at /data/output.txt.')
+    return
 
 def createDatabase(db_file_path):
     """Creates an sqlite database file for headline snaps, with all necessary columns.
@@ -162,6 +164,7 @@ def createDatabase(db_file_path):
     #print(res.fetchone())
 
     con.close()
+    return
 
 def addToDatabase(db_file_path):
     """placeholder
@@ -190,6 +193,7 @@ def addToDatabase(db_file_path):
     print(res.fetchall())
 
     con.close()
+    return
 
 def createDirectory(path):
     """Creates a directory.
@@ -204,5 +208,6 @@ def createDirectory(path):
         print("Directory '{0}' being created ...".format(os.path.basename(path)))
         os.makedirs(path)
         print('OK')
+        return
     else:
-        pass
+        return
