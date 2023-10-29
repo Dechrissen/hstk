@@ -157,7 +157,7 @@ def createDatabase(db_file_path):
         return
 
     cur = con.cursor()
-    cur.execute("CREATE TABLE headlines(text, author, id)")
+    cur.execute("CREATE TABLE headlines(text)")
 
     # test if the table exists in the built-in sqlite_master
     #res = cur.execute("SELECT name FROM sqlite_master")
@@ -166,31 +166,31 @@ def createDatabase(db_file_path):
     con.close()
     return
 
-def addToDatabase(db_file_path):
+def addToDatabase(db_file, text_file):
     """placeholder
     """
     # connect to the database
     try:
-        con = sqlite3.connect(db_file_path)
+        con = sqlite3.connect(db_file)
     except sqlite3.Error as e:
         print(e)
         return
 
     cur = con.cursor()
 
-    # add values to the table
-    cur.execute("""
-    INSERT INTO headlines VALUES
-        ('sample text 1', 'derek', 0001),
-        ('sample text 2', 'evan', 0002)
-    """)
+    # open the text file with headline snaps
+    with open(text_file, mode='r', encoding='utf-8') as file:
+        for snap in file:
+            snap = snap.split('\n')[0]
+            # add snap to the table (note the comma after snap to make it a tuple
+            cur.execute("INSERT INTO headlines VALUES (?)", (snap,))
 
     # commit the transaction on the connection object
     con.commit()
 
     # test that the values were added to the table
     res = cur.execute("SELECT text FROM headlines")
-    print(res.fetchall())
+    print(res.fetchall()[:10])
 
     con.close()
     return
