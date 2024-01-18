@@ -8,6 +8,6 @@ initialize()
 
 # test for creating sqlite db
 db_file = r"./data/db/hs.db"
-text_file = r"./data/src/text/hs_derek.txt"
+text_file = r"./data/src/text/test_file.txt"
 createDatabase(db_file)
 addToDatabase(db_file, text_file)

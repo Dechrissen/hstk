@@ -157,7 +157,11 @@ def createDatabase(db_file_path):
         return
 
     cur = con.cursor()
-    cur.execute("CREATE TABLE headlines(text)")
+    # this UNIQUE declaration lets us use the IGNORE keyword when adding to the database, to avoid duplicates 
+    cur.execute('''CREATE TABLE headlines(
+                        text,
+                        id,
+                        UNIQUE(text, id))''')
 
     # test if the table exists in the built-in sqlite_master
     #res = cur.execute("SELECT name FROM sqlite_master")
@@ -167,7 +171,14 @@ def createDatabase(db_file_path):
     return
 
 def addToDatabase(db_file, text_file):
-    """placeholder
+    """Adds headline snaps from a text file into the database.
+
+    args
+        db_file : the path to the database
+        text_file : the file containing lines of headline snaps as text
+
+    returns
+        null
     """
     # connect to the database
     try:
@@ -182,8 +193,9 @@ def addToDatabase(db_file, text_file):
     with open(text_file, mode='r', encoding='utf-8') as file:
         for snap in file:
             snap = snap.split('\n')[0]
-            # add snap to the table (note the comma after snap to make it a tuple
-            cur.execute("INSERT INTO headlines VALUES (?)", (snap,))
+            # add snap to the table (note the comma after snap to make it a tuple)
+            cur.execute('''INSERT OR IGNORE INTO headlines(text,id)
+                           VALUES(?,1)''', (snap,))
 
     # commit the transaction on the connection object
     con.commit()
