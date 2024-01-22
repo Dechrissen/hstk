@@ -28,12 +28,7 @@ In some cases, you might need to use [a9t9](https://github.com/A9T9/Free-OCR-Sof
 
 (Windows only) Prepare a folder of the all the non-compliant headline snaps you need to convert to text. Open a9t9 (example below), click "Open Images", and navigate to your folder. Select all images in the folder. After a9t9 is finished loading the images in, tick the box "Process All Documents", then click "Start Ocr". After the process is complete, you will see all OCRed images on the right side of the window. Click "Save as Text" and save the file to `/hsdb/scripts`, naming it `a9t9.txt` (filename is important!).
 
-<img src="./assets/a9t9.png"
-    alt="a9t9 example"
-    style="display: block; 
-           margin-left: auto;
-           margin-right: auto;
-           width: 60%;" />
+<p align="center"><img src="./assets/a9t9.png" alt="a9t9 example" style="width: 60%;" /></p>
 
 Now you can invoke the script `clean-a9t9.py` by running
 
