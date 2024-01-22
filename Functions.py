@@ -6,7 +6,8 @@ import platform
 
 
 def initialize():
-    """Initializes the project for use, creating local directories, etc.
+    """Initializes the project for use: creates local directories, creates 
+    empty db file.
 
     args
         null
@@ -21,12 +22,15 @@ def initialize():
     for dir in dirs:
         createDirectory(dir)
 
-    print("Done.")
+    db_file = r"./data/db/hs.db"
+    createDatabase(db_file)
+
+    print("Setup complete.")
     return
 
 def tweakImage(image_file):
     """Crops (removes top and bottom portions) and inverts contrast (into black
-    text on white background) for a raw headline snap image.
+    text on white background) for a raw Headline Snap image.
 
     args
         image_file : the path to an image file
@@ -63,13 +67,13 @@ def tweakImage(image_file):
     return cropped_image
 
 def imageToText(tweaked_image):
-    """Converts a tweaked headline snap image into text.
+    """Converts a tweaked Headline Snap image into text.
 
     args
-        tweaked_image : a cropped and contrast-inverted headline snap
+        tweaked_image : a cropped and contrast-inverted Headline Snap
 
     returns
-        cleaned_text : the headline snap as a string
+        cleaned_text : the Headline Snap as a string
     """
     # tesseract needs to be present in your PATH (both Windows and Linux)
     # check current platform
@@ -93,7 +97,7 @@ def imageToText(tweaked_image):
     return cleaned_text
 
 def convertDirectory(dir):
-    """Iterates over a directory of images (headline snaps) and runs them through
+    """Iterates over a directory of images (Headline Snaps) and runs them through
     the crop & text conversion functions. The resulting converted headline
     snaps will be appended to a text file 'output.txt', one per line.
 
@@ -104,7 +108,7 @@ def convertDirectory(dir):
         null
     """
 
-    print("Converting headline snaps...")
+    print("Converting Headline Snaps...")
 
     # intermediate list to store converted images before they're written to file
     converted_snaps = []
@@ -125,19 +129,19 @@ def convertDirectory(dir):
         print('Converted ' + str(count))
 
     print('Done.')
-    print('Successfully converted', str(count), 'headline snaps into text.')
+    print('Successfully converted', str(count), 'Headline Snaps into text.')
     print('Creating output file...')
 
-    # write headline snaps stored in intermediate list to final output file
-    with open('./data/output.txt', 'w', encoding='utf-8') as output_file:
+    # write Headline Snaps stored in intermediate list to final output file
+    with open('./data/src/text/output.txt', 'w', encoding='utf-8') as output_file:
         output_file.writelines(converted_snaps)
 
     print('Done.')
-    print('Output is available at /data/output.txt.')
+    print('Output is available at /data/src/text/output.txt.')
     return
 
 def createDatabase(db_file_path):
-    """Creates an sqlite database file for headline snaps, with all necessary columns.
+    """Creates an sqlite database file for Headline Snaps, with all necessary columns.
 
     args
         db_file_path : the path where the sqlite database file will exist
@@ -145,37 +149,34 @@ def createDatabase(db_file_path):
     returns
         null
     """
-    path_to_db_dir = './data/db'
-    createDirectory(path_to_db_dir)
 
     con = None
     try:
         con = sqlite3.connect(db_file_path)
-        print("Database created successfully.")
     except sqlite3.Error as e:
         print(e)
         return
 
     cur = con.cursor()
-    # this UNIQUE declaration lets us use the IGNORE keyword when adding to the database, to avoid duplicates 
-    cur.execute('''CREATE TABLE headlines(
-                        text,
-                        id,
-                        UNIQUE(text, id))''')
-
-    # test if the table exists in the built-in sqlite_master
-    #res = cur.execute("SELECT name FROM sqlite_master")
-    #print(res.fetchone())
+    try:
+        # this UNIQUE declaration lets us use the IGNORE keyword when adding to the database, to avoid duplicates 
+        cur.execute('''CREATE TABLE headlines(
+                            text,
+                            UNIQUE(text))''')
+    except sqlite3.Error as e:
+        print(e)
+        return
 
     con.close()
+    print("Empty database created.")
     return
 
 def addToDatabase(db_file, text_file):
-    """Adds headline snaps from a text file into the database.
+    """Adds Headline Snaps from a text file into the database.
 
     args
         db_file : the path to the database
-        text_file : the file containing lines of headline snaps as text
+        text_file : the file containing lines of Headline Snaps as text
 
     returns
         null
@@ -189,20 +190,20 @@ def addToDatabase(db_file, text_file):
 
     cur = con.cursor()
 
-    # open the text file with headline snaps
+    # open the text file with Headline Snaps
     with open(text_file, mode='r', encoding='utf-8') as file:
         for snap in file:
             snap = snap.split('\n')[0]
             # add snap to the table (note the comma after snap to make it a tuple)
-            cur.execute('''INSERT OR IGNORE INTO headlines(text,id)
-                           VALUES(?,1)''', (snap,))
+            cur.execute('''INSERT OR IGNORE INTO headlines(text)
+                           VALUES(?)''', (snap,))
 
     # commit the transaction on the connection object
     con.commit()
 
     # test that the values were added to the table
     res = cur.execute("SELECT text FROM headlines")
-    print(res.fetchall()[:10])
+    print(res.fetchall())
 
     con.close()
     return
@@ -211,7 +212,7 @@ def createDirectory(path):
     """Creates a directory.
 
     args
-        path : the path where the directory will exist
+        path : the path where the directory should exist
 
     returns
         null
