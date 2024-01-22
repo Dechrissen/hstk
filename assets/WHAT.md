@@ -4,12 +4,7 @@ Headline Snaps are part of an experiment [a friend](https://github.com/Quadrixis
 
 Essentially, they are **fabricated news headlines** inspired mostly by real world events, but exaggerated for comedic effect. Specifically, the source data we're working with is `.png` or `.jpeg` files, created via Snapchat, with a plain black background and white text as the news headline.
 
-<img src="../assets/example_headline.jpg"
-    alt="example headline snap"
-    style="display: block; 
-           margin-left: auto;
-           margin-right: auto;
-           width: 40%;" />
+<p align="center"><img src="../assets/example_headline.jpg" alt="example headline snap" style="width:30%"/></p>
 
 Once we realized the comedy and entertainment they could provide, we started sending each other Headline Snaps more frequently, to the point where we've now amassed several thousand of them. The sheer volume led us to want to convert them into some form of analyzable data, so we could run various experiments (graphs, trends, language models, text synthesis). This is what sparked the motivation for this project.
 
