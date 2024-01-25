@@ -3,6 +3,7 @@ import os
 from PIL import Image, ImageOps, ImageEnhance
 import sqlite3
 import platform
+import json
 
 
 def initialize():
@@ -15,6 +16,23 @@ def initialize():
     returns
         null
     """
+    # try to open cache.json (if it exists)
+    try:
+        with open("cache.json", "r") as jsonFile:
+            cache = json.load(jsonFile)
+    except FileNotFoundError:
+        # create cache file if it doesn't exist, initialize to false
+        data = json.loads("""{"initialized":false}""")
+        with open("cache.json", "w") as jsonFile:
+            json.dump(data, jsonFile)
+        print("Cache file created.")
+    
+    # check if initialize has been run successfully already
+    # if yes, return
+    if cache["initialized"]:
+        return
+
+    # if no, run all the initialize steps
     print("Performing first-time setup ...")
 
     # create the local directories (which should not exist on remote)
@@ -22,8 +40,14 @@ def initialize():
     for dir in dirs:
         createDirectory(dir)
 
+    # create the main database file
     db_file = r"./data/db/hs.db"
     createDatabase(db_file)
+
+    # set cache so initialize doesn't run anymore
+    cache["initialized"] = True
+    with open("cache.json", "w") as jsonFile:
+        json.dump(cache, jsonFile)
 
     print("Setup complete.")
     return
@@ -224,3 +248,22 @@ def createDirectory(path):
         return
     else:
         return
+
+def cleanText(text):
+    '''Cleans a string, removing punctuation and making lower case.
+
+    args
+        text : the string to clean
+
+    returns
+        text : the cleaned string
+    '''
+    text = text.lower()
+    # define filters to remove from the string
+    filters = [',', '.', ')', '(', '[', ']', '{', '}', '<', '>', '!', '?', ';', ':', '"']
+
+    # replace instances of filters with empty string
+    for filter in filters:
+        text = text.replace(filter, '')
+
+    return text

@@ -3,7 +3,8 @@ from Analysis import *
 from Tokenizer import *
 from argparse import ArgumentParser
 
-# TODO: make this run only if it hasn't yet
+# this only runs if "initialized":false in cache.json
+# so if the project has been initialized once, it won't run again
 initialize()
 
 
@@ -54,8 +55,11 @@ if args.zaddtestfile:
 
 # check to see if subparsers were invoked
 if args.subparser == "tokenizer":
+    # check if individual subparser options were used
     if args.update_tokens:
         updateTokens()
+
+print(tokenizeSnap("this,    Is a Test::: test. test! snap"))
 
 # debug: print Namespace to see arg values, then exit
 print(args) 
