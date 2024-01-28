@@ -1,6 +1,11 @@
 from Functions import *
 
 def updateTokens():
+    # this function should iterate over every (new?) snap in the snap db
+    # using tokenizeSnap for each
+    # and adding each token to the token db with addToTokenDatabase()
+    # to only check NEW snaps (maybe), we could use a value in a json to save the last headline snap row that has been checked,
+    # then start from there when this function is run again
     print("updateTokens function has been invoked")
 
 def tokenizeSnap(snap):

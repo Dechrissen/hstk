@@ -32,6 +32,8 @@ parser.add_argument("-r", "--random", metavar=("NUMBER"), nargs="?", const=1, ty
 parser.add_argument("-c", "--convert", action="store_true", help="convert headline snap image files in /data/src/raw then add them to the database")
 # debug: zaddtestfile : stores True when used
 parser.add_argument("-z", "--zaddtestfile", action="store_true")
+# search : takes one mandatory argument of type str
+parser.add_argument("-s", "--search", metavar=("PHRASE"), type=str, help="search the headline snap database for snaps containing PHRASE")
 
 # parser.add_argument("-v", "--visualizer")
 
@@ -45,13 +47,14 @@ args = parser.parse_args()
 # run `args` through functions to check each argument
 getTotalSnaps(args.total)
 getRandomSnap(args.random)
+searchSnaps(args.search)
 if args.convert:
     convertDirectory(r"./data/src/raw")
-    addToDatabase(db_file=r"./data/db/hs.db", text_file=r"./data/src/text/output.txt")
+    addToSnapDatabase(db_file=r"./data/db/hs.db", text_file=r"./data/src/text/output.txt")
 
 # debug
 if args.zaddtestfile:
-    addToDatabase(db_file=r"./data/db/hs.db", text_file=r"./data/src/text/test_file.txt")
+    addToSnapDatabase(db_file=r"./data/db/hs.db", text_file=r"./data/src/text/test_file.txt")
 
 # check to see if subparsers were invoked
 if args.subparser == "tokenizer":
@@ -59,7 +62,11 @@ if args.subparser == "tokenizer":
     if args.update_tokens:
         updateTokens()
 
-print(tokenizeSnap("this,    Is a Test::: test. test! snap"))
+# tokenizer and clean function test
+print(tokenizeSnap("this,    Is a Test::: super-cool man-eating test. test! snap"))
+
+print(addToTokenDatabase(r"./data/db/tokens.db", "box-cutter", 5))
+
 
 # debug: print Namespace to see arg values, then exit
 print(args) 

@@ -4,6 +4,7 @@ from PIL import Image, ImageOps, ImageEnhance
 import sqlite3
 import platform
 import json
+from time import sleep
 
 
 def initialize():
@@ -40,9 +41,11 @@ def initialize():
     for dir in dirs:
         createDirectory(dir)
 
-    # create the main database file
-    db_file = r"./data/db/hs.db"
-    createDatabase(db_file)
+    # create the database files
+    hsdb_file = r"./data/db/hs.db"
+    createSnapDatabase(hsdb_file)
+    token_db_file = r"./data/db/tokens.db"
+    createTokenDatabase(token_db_file)
 
     # set cache so initialize doesn't run anymore
     cache["initialized"] = True
@@ -164,7 +167,7 @@ def convertDirectory(dir):
     print('Output is available at /data/src/text/output.txt.')
     return
 
-def createDatabase(db_file_path):
+def createSnapDatabase(db_file_path):
     """Creates an sqlite database file for Headline Snaps, with all necessary columns.
 
     args
@@ -192,10 +195,10 @@ def createDatabase(db_file_path):
         return
 
     con.close()
-    print("Empty database created.")
+    print("Empty Headline Snap database created.")
     return
 
-def addToDatabase(db_file, text_file):
+def addToSnapDatabase(db_file, text_file):
     """Adds Headline Snaps from a text file into the database.
 
     args
@@ -232,6 +235,84 @@ def addToDatabase(db_file, text_file):
     con.close()
     return
 
+def createTokenDatabase(db_file_path):
+    """Creates an sqlite database file for individual token counts, with all necessary columns.
+
+    args
+        db_file_path : the path where the sqlite database file will exist
+
+    returns
+        null
+    """
+
+    con = None
+    try:
+        con = sqlite3.connect(db_file_path)
+    except sqlite3.Error as e:
+        print(e)
+        return
+
+    cur = con.cursor()
+    try:
+        # this UNIQUE declaration lets us use the IGNORE keyword when adding to the database, to avoid duplicates
+        # the PRIMARY KEY option ... TODO
+        cur.execute('''CREATE TABLE tokens(
+                            token TEXT PRIMARY KEY,
+                            count INTEGER,
+                            UNIQUE(token))''')
+    except sqlite3.Error as e:
+        print(e)
+        return
+
+    con.close()
+    print("Empty token database created.")
+    return
+
+def addToTokenDatabase(db_file, token, increment):
+    """Adds tokens to the token database and/or updates a token's count.
+
+    args
+        db_file : the path to the database
+        token : the token to be added to the database
+        increment : the amount to increment a token's count by (1 means it's new)
+
+    returns
+        null
+    """
+    # connect to the database
+    try:
+        con = sqlite3.connect(db_file)
+    except sqlite3.Error as e:
+        print(e)
+        return
+
+    cur = con.cursor()
+
+    # first check if the token is already in the db
+    # this returns 1 if it exists in the db, and 0 if not (in a tuple)
+    exists = cur.execute('''SELECT EXISTS( SELECT 1 FROM tokens WHERE token = (?) )''', (token,))
+    # if it doesn't exist, add token with initial count of 1
+    if exists.fetchone()[0] == 0:
+        cur.execute('''INSERT OR IGNORE INTO tokens(token,count)
+                           VALUES(?,?)''', (token,increment))
+    # if it does exist, increment its count by 1
+    else:
+        # get rowid of token
+        res = cur.execute('''SELECT rowid FROM tokens WHERE token = (?)''', (token,))
+        rowid = res.fetchone()[0]
+        # increment count using row id
+        cur.execute('''UPDATE tokens SET count = count + (?) WHERE rowid = (?)''', (increment,rowid))
+
+    # commit the transaction on the connection object
+    con.commit()
+
+    # test that the values were added to the table
+    res = cur.execute("SELECT * FROM tokens")
+    print(res.fetchall())
+
+    con.close()
+    return
+
 def createDirectory(path):
     """Creates a directory.
 
@@ -251,6 +332,7 @@ def createDirectory(path):
 
 def cleanText(text):
     '''Cleans a string, removing punctuation and making lower case.
+    Preserves phrasal (hypenated) adjectives.
 
     args
         text : the string to clean
