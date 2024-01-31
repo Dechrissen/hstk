@@ -1,13 +1,13 @@
-# hstoolkit
+# hstk – Headline Snap Toolkit
 
-This project contains a collection of tools for creating a database of Headline Snaps ([What are Headline Snaps?](./assets/WHAT.md)) as text via OCR and commands for interfacing with the database. There also exists a pipeline that can be invoked to add _new_ Headline Snaps into the database.
+This project contains a collection of tools for creating a database of Headline Snaps ([What are Headline Snaps?](./assets/WHAT.md)) as text via OCR, and commands for interfacing with the database. There are several built-in tools for analyzing the data, including data visualization functions.
 
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Converting legacy headline snaps](#using-a9t9-to-convert-legacy-or-non-compliant-headline-snaps)
+- [Converting non-compliant headline snaps](#using-a9t9-to-convert-legacy-or-non-compliant-headline-snaps)
 - [Installing Tessertact executable on Windows](#installing-tesseract-executable-on-windows)
 
 ## Prerequisites
@@ -36,7 +36,7 @@ Now you can invoke the script `clean-a9t9.py` by running
 python clean-a9t9.py
 ```
 
-The cleaned file will be output to `/hsdb/scripts/cleaned.txt`.
+The cleaned file will be output to `/hstk/scripts/cleaned.txt`.
 
 ## Installing Tesseract executable on Windows
 
@@ -44,4 +44,3 @@ The link to the installer for the Tesseract executable on Windows can be found [
 
 TODO detail what to do with the output file now
 
-## Headline Snap Guidelines

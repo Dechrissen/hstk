@@ -15,7 +15,7 @@ def tokenizeSnap(snap):
         snap : a Headline Snap to be tokenized
 
     returns
-        tokenized_snap : a dictionary of token:count (string:int) pairs
+        tokenized_snap : a dictionary of token:count (string:int) key/value pairs
     '''
 
     # split snap (string) into list of tokens

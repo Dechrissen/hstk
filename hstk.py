@@ -63,9 +63,9 @@ if args.subparser == "tokenizer":
         updateTokens()
 
 # tokenizer and clean function test
-print(tokenizeSnap("this,    Is a Test::: super-cool man-eating test. test! snap"))
+#print(tokenizeSnap("this,    Is a Test::: super-cool man-eating test. test! snap"))
 
-print(addToTokenDatabase(r"./data/db/tokens.db", "box-cutter", 5))
+#print(addToTokenDatabase(r"./data/db/tokens.db", "vehicle", 1))
 
 
 # debug: print Namespace to see arg values, then exit
