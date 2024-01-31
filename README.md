@@ -7,7 +7,7 @@ This project contains a collection of tools for creating a database of Headline 
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Converting non-compliant headline snaps](#using-a9t9-to-convert-legacy-or-non-compliant-headline-snaps)
+- [Converting non-compliant Headline Snaps](#using-a9t9-to-convert-legacy-or-non-compliant-headline-snaps)
 - [Installing Tessertact executable on Windows](#installing-tesseract-executable-on-windows)
 
 ## Prerequisites
@@ -20,13 +20,13 @@ TODO
 ## Installation
 TODO
 
-## Using a9t9 to convert legacy or non-compliant headline snaps
+## Using a9t9 to convert legacy or non-compliant Headline Snaps
 
-In some cases, you might need to use [a9t9](https://github.com/A9T9/Free-OCR-Software), a free and open source OCR GUI application for Windows, for OCRing some legacy headline snaps, i.e., headline snaps which do not follow the [guidelines](#headline-snap-guidelines) (background not black, text too high in the frame, etc.). This software is (for one reason or another) more capable of OCRing these non-compliant snaps than our Tesseract-based pipeline.
+In some cases, you might need to use [a9t9](https://github.com/A9T9/Free-OCR-Software), a free and open source OCR GUI application for Windows, for OCRing some legacy Headline Snap image files, i.e., those which do not follow the [guidelines](./assets/GUIDELINES.md) (background not black, text too high in the frame, etc.). This software is (for some reason) more capable of OCRing these non-compliant images than our Tesseract-based pipeline.
 
 ### Instructions
 
-(Windows only) Prepare a folder of the all the non-compliant headline snaps you need to convert to text. Open a9t9 (example below), click "Open Images", and navigate to your folder. Select all images in the folder. After a9t9 is finished loading the images in, tick the box "Process All Documents", then click "Start Ocr". After the process is complete, you will see all OCRed images on the right side of the window. Click "Save as Text" and save the file to `/hsdb/scripts`, naming it `a9t9.txt` (filename is important!).
+(Windows only) Prepare a folder of the all the non-compliant Headline Snaps you need to convert to text. Open a9t9 (example below), click "Open Images", and navigate to your folder. Select all images in the folder. After a9t9 is finished loading the images in, tick the box "Process All Documents", then click "Start Ocr". After the process is complete, you will see all OCRed images on the right side of the window. Click "Save as Text" and save the file to `/hstk/scripts`, naming it `a9t9.txt` (filename is important).
 
 <p align="center"><img src="./assets/a9t9.png" alt="a9t9 example" style="width: 60%;" /></p>
 
