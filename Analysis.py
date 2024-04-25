@@ -30,10 +30,16 @@ def searchSnaps(phrase):
         if len(matches) == 0:
             print(search_output)
             return
+        
+        # max amount of matches
         search_cap = 10
+        # initialize a count for printing numbers before each snap
+        count = 1
         search_output = '\n'
         for match in matches[:search_cap]:
-            search_output = search_output + match[0] + '\n'
+            # append each match to search_output
+            search_output = search_output + str(count) + ') ' + match[0] + '\n'
+            count += 1
         print(search_output)
         return
     else:
@@ -61,7 +67,7 @@ def getTotalSnaps(total=False):
         cur = con.cursor()
         # select every row in headlines table
         res = cur.execute("SELECT Count(*) FROM headlines")
-        print("Total:", res.fetchone()[0])
+        print("\nTotal:", res.fetchone()[0])
         con.close()
         return
     else:
@@ -77,7 +83,7 @@ def getRandomSnap(number):
         null
     """
     if number != None:
-        print("Fetching", number, "random {} ...".format("Headline Snap" if number == 1 else "Headline Snaps"))
+        print("Fetching", number, "random {} ...\n".format("Headline Snap" if number == 1 else "Headline Snaps"))
         sleep(2)
         db_file = r"./data/db/hs.db"
         # connect to the database
@@ -90,7 +96,14 @@ def getRandomSnap(number):
         # select a random number of snaps from the database equal to the value of `number`
         res = cur.execute('''SELECT * FROM headlines ORDER BY RANDOM() LIMIT ?''', (number,))
 
-        print(res.fetchall()[:number])
+        # initialize a count for printing numbers before each snap
+        count = 1
+        for snap in res.fetchall()[:number]:
+            # clean up snap from res.fetchall() output
+            snap = snap[0].strip(' ')
+            print(str(count) + ') ' + snap)
+            count += 1
+
         con.close()
         return
     else:

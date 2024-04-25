@@ -9,7 +9,7 @@ from time import sleep
 
 def initialize():
     """Initializes the project for use: creates local directories, creates 
-    empty db file.
+    empty db files.
 
     args
         null
@@ -125,8 +125,8 @@ def imageToText(tweaked_image):
 
 def convertDirectory(dir):
     """Iterates over a directory of images (Headline Snaps) and runs them through
-    the crop & text conversion functions. The resulting converted headline
-    snaps will be appended to a text file 'output.txt', one per line.
+    the crop & text conversion functions. The resulting converted Headline
+    Snaps will be appended to a text file 'ocr_output.txt', one per line.
 
     args
         dir : the directory containing the images to be converted
@@ -160,11 +160,11 @@ def convertDirectory(dir):
     print('Creating output file...')
 
     # write Headline Snaps stored in intermediate list to final output file
-    with open('./data/src/text/output.txt', 'w', encoding='utf-8') as output_file:
+    with open('./data/src/text/ocr_output.txt', 'w', encoding='utf-8') as output_file:
         output_file.writelines(converted_snaps)
 
     print('Done.')
-    print('Output is available at /data/src/text/output.txt.')
+    print('Output is available at /data/src/text/ocr_output.txt.')
     return
 
 def createSnapDatabase(db_file_path):
@@ -349,3 +349,43 @@ def cleanText(text):
         text = text.replace(filter, '')
 
     return text
+
+def dumpAll():
+    '''Dumps all Headline Snaps in the database to a text file.
+
+    args
+        null
+
+    returns
+        null
+    '''
+    # initialize empty list to store all db snaps
+    all_snaps = []
+
+    db_file = r"./data/db/hs.db"
+    # connect to the database
+    try:
+        con = sqlite3.connect(db_file)
+    except sqlite3.Error as e:
+        print(e)
+        return
+    cur = con.cursor()
+    # select text column from headlines table
+    res = cur.execute('''SELECT text FROM headlines''')
+
+    print("Gathering all Headline Snaps to be exported ...")
+    for snap in res.fetchall():
+        # clean snaps from fetchall output
+        snap = snap[0].strip(' ') + '\n'
+        # append all snaps to all_snaps list
+        all_snaps.append(snap)
+
+    # write all snaps from all_snaps to dump.txt
+    print("Dumping all Headline Snaps to a text file ...")
+    with open('./data/dump.txt', 'w', encoding='utf-8') as dump_file:
+        dump_file.writelines(all_snaps)
+
+    print('Done.')
+    print('Output is available at /data/dump.txt.')
+    con.close()
+    

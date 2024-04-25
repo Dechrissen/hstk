@@ -14,13 +14,13 @@ initialize()
 # set program name and description
 parser = ArgumentParser(
     prog="hstk",
-    description="Toolkit for working with a database of Headline Snaps",
+    description="Toolkit for creating and interfacing with a database of Headline Snaps",
 )
 
 # add subparsers for specific functions, example: tokenizer-related ones
 subparsers = parser.add_subparsers(
     # set dest="subparser" so that we can access it in the Namespace later
-    title="subcommands", dest="subparser", help="subcommands for database-interfacing"
+    title="subcommands", dest="subparser", help="toolkit subcommands"
 )
 
 # MAIN PARSER: Define options
@@ -30,13 +30,16 @@ parser.add_argument("-t", "--total", action="store_true", help="display the tota
 parser.add_argument("-r", "--random", metavar=("NUMBER"), nargs="?", const=1, type=int, help="display a random headline snap from the database")
 # convert : stores True when used
 parser.add_argument("-c", "--convert", action="store_true", help="convert headline snap image files in /data/src/raw then add them to the database")
-# debug: zaddtestfile : stores True when used
+# dump : stores True when used
+parser.add_argument("-d", "--dump", action="store_true", help="dump all headline snaps in the database to a text file at /data/dump.txt")
+# DEBUG: zaddtestfile : stores True when used
 parser.add_argument("-z", "--zaddtestfile", action="store_true")
 # search : takes one mandatory argument of type str
 parser.add_argument("-s", "--search", metavar=("PHRASE"), type=str, help="search the headline snap database for snaps containing PHRASE")
 
 # parser.add_argument("-v", "--visualizer")
 
+# SUBPARSER: Define options
 # add subparser arguments
 tokenizer_parser = subparsers.add_parser("tokenizer", help="tokenizer-related commands")
 tokenizer_parser.add_argument("-u", "--update_tokens", action="store_true", help="update the token database with new counts")
@@ -50,7 +53,10 @@ getRandomSnap(args.random)
 searchSnaps(args.search)
 if args.convert:
     convertDirectory(r"./data/src/raw")
-    addToSnapDatabase(db_file=r"./data/db/hs.db", text_file=r"./data/src/text/output.txt")
+    addToSnapDatabase(db_file=r"./data/db/hs.db", text_file=r"./data/src/text/ocr_output.txt")
+
+if args.dump:
+    dumpAll()
 
 # debug
 if args.zaddtestfile:
@@ -69,6 +75,6 @@ if args.subparser == "tokenizer":
 
 
 # debug: print Namespace to see arg values, then exit
-print(args) 
+print('\n' + 'DEBUG: ' + str(args) + '\n') 
 print("ending...")
 raise SystemExit(1)

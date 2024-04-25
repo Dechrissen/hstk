@@ -1,6 +1,6 @@
 # hstk – Headline Snap Toolkit
 
-This project contains a collection of tools for creating a database of Headline Snaps ([What are Headline Snaps?](./assets/WHAT.md)) as text via OCR, and commands for interfacing with the database. There are several built-in tools for analyzing the data, including data visualization functions.
+A collection of tools for creating a database of Headline Snaps ([What are Headline Snaps?](./assets/WHAT.md)) and interfacing with the database. There are several built-in tools for analyzing the data, including language modeling and data visualization functions.
 
 ## Table of Contents
 
@@ -12,7 +12,7 @@ This project contains a collection of tools for creating a database of Headline 
 
 ## Prerequisites
 
-(Make sure these are separated into 2 categories, one for solely interfacing with the database/playing around, and the other for adding new snaps to the database. Prerequisites vary based on these 2 things.)
+TODO add Python requirements install instructions and link to Tesseract install instructions (add Linux instructions)
 
 ## Usage
 TODO
@@ -20,7 +20,7 @@ TODO
 ## Installation
 TODO
 
-## Using a9t9 to convert legacy or non-compliant Headline Snaps
+## Converting legacy or non-compliant Headline Snaps
 
 In some cases, you might need to use [a9t9](https://github.com/A9T9/Free-OCR-Software), a free and open source OCR GUI application for Windows, for OCRing some legacy Headline Snap image files, i.e., those which do not follow the [guidelines](./assets/GUIDELINES.md) (background not black, text too high in the frame, etc.). This software is (for some reason) more capable of OCRing these non-compliant images than our Tesseract-based pipeline.
 
