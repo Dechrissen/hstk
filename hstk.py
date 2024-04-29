@@ -1,6 +1,7 @@
 from Functions import *
 from Analysis import *
 from Tokenizer import *
+from Trigrams import *
 from argparse import ArgumentParser
 
 # this only runs if "initialized":false in cache.json
@@ -14,7 +15,7 @@ initialize()
 # set program name and description
 parser = ArgumentParser(
     prog="hstk",
-    description="Toolkit for creating and interfacing with a database of Headline Snaps",
+    description="hstk - headline snap toolkit",
 )
 
 # add subparsers for specific functions, example: tokenizer-related ones
@@ -75,6 +76,12 @@ if args.subparser == "tokenizer":
 
 
 # debug: print Namespace to see arg values, then exit
-print('\n' + 'DEBUG: ' + str(args) + '\n') 
+print('\n' + 'DEBUG: ' + str(args) + '\n')
+
+print("trigram tests ...")
+#dumpCorpus()
+test_model = trainTrigramModel(corpus_path)
+print(generateSentence(test_model))
+
 print("ending...")
 raise SystemExit(1)

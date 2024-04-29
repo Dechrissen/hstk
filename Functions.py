@@ -350,6 +350,40 @@ def cleanText(text):
 
     return text
 
+def dumpCorpus():
+    '''Dumps all Headline Snaps in the database to a text file after running them
+    through the cleanText() function. For use with language model training functions.
+    
+    args
+        null
+
+    returns
+        null
+    '''
+    all_cleaned_snaps = []
+    db_file = r"./data/db/hs.db"
+    # connect to the database
+    try:
+        con = sqlite3.connect(db_file)
+    except sqlite3.Error as e:
+        print(e)
+        return
+    cur = con.cursor()
+    # select text column from headlines table
+    res = cur.execute('''SELECT text FROM headlines''')
+
+    for snap in res.fetchall():
+        # clean snaps from fetchall output
+        snap = cleanText(snap[0]) + '\n'
+        # append all cleaned snaps to all_cleaned_snaps list
+        all_cleaned_snaps.append(snap)
+    
+    # write all snaps from all_cleaned_snaps to corpus.txt
+    with open('./data/corpus.txt', 'w', encoding='utf-8') as dump_file:
+        dump_file.writelines(all_cleaned_snaps)
+
+    con.close()
+
 def dumpAll():
     '''Dumps all Headline Snaps in the database to a text file.
 
