@@ -2,7 +2,9 @@ from nltk import trigrams
 from collections import defaultdict
 import random
 from pathlib import Path
+from time import sleep
 import os
+import json
 
 # must run dumpCorpus before this file exists
 corpus_path = r"./data/corpus.txt"
@@ -23,6 +25,7 @@ def trainTrigramModel(corpus_path):
     # TODO make this use headline snap data somehow, not iterate through txt files in a directory
 
     # train model on full corpus of headline snaps
+    print("Training a trigram model on the database of Headline Snaps ...")
     with open(corpus_path, 'r', encoding='utf-8') as f:
         sents = f.readlines()
         for sentence in sents:
@@ -35,7 +38,8 @@ def trainTrigramModel(corpus_path):
         total_count = float(sum(model[w1_w2].values()))
         for w3 in model[w1_w2]:
             model[w1_w2][w3] /= total_count
-
+    sleep(1)
+    print("Done.\n")
     return model
 
 def generateSentence(trigram_model):
@@ -50,6 +54,9 @@ def generateSentence(trigram_model):
     text = [None, None]
     sentence_finished = False
 
+    sleep(1)
+    print("Generating new Headline Snap ...\n")
+    sleep(1)
     while not sentence_finished:
         r = random.random()
         accumulator = .0

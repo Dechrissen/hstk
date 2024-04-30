@@ -13,7 +13,7 @@ def searchSnaps(phrase):
     """
     if phrase != None:
         print("Searching Headline Snap database ...")
-        sleep(2)
+        sleep(1)
         search_output = '\nNO RESULTS\n'
         db_file = r"./data/db/hs.db"
         # connect to the database
@@ -56,7 +56,7 @@ def getTotalSnaps(total=False):
     """
     if total:
         print("Fetching total Headline Snap count ...")
-        sleep(2)
+        sleep(1)
         db_file = r"./data/db/hs.db"
         # connect to the database
         try:
@@ -84,7 +84,7 @@ def getRandomSnap(number):
     """
     if number != None:
         print("Fetching", number, "random {} ...\n".format("Headline Snap" if number == 1 else "Headline Snaps"))
-        sleep(2)
+        sleep(1)
         db_file = r"./data/db/hs.db"
         # connect to the database
         try:

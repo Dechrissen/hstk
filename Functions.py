@@ -135,7 +135,7 @@ def convertDirectory(dir):
         null
     """
 
-    print("Converting Headline Snaps...")
+    print("Converting Headline Snaps ...")
 
     # intermediate list to store converted images before they're written to file
     converted_snaps = []
@@ -156,15 +156,18 @@ def convertDirectory(dir):
         print('Converted ' + str(count))
 
     print('Done.')
-    print('Successfully converted', str(count), 'Headline Snaps into text.')
-    print('Creating output file...')
+    sleep(1)
+    print('Successfully converted', str(count), 'Headline Snap image files to text.')
+    print('Creating output file ...')
+    sleep(1)
 
     # write Headline Snaps stored in intermediate list to final output file
     with open('./data/src/text/ocr_output.txt', 'w', encoding='utf-8') as output_file:
         output_file.writelines(converted_snaps)
 
     print('Done.')
-    print('Output is available at /data/src/text/ocr_output.txt.')
+    sleep(1)
+    print('Output is available at /data/src/text/ocr_output.txt')
     return
 
 def createSnapDatabase(db_file_path):
@@ -217,6 +220,9 @@ def addToSnapDatabase(db_file, text_file):
 
     cur = con.cursor()
 
+    print("Adding Headline Snaps from " + str(text_file) + " to the database ...")
+    sleep(1)
+
     # open the text file with Headline Snaps
     with open(text_file, mode='r', encoding='utf-8') as file:
         for snap in file:
@@ -228,11 +234,13 @@ def addToSnapDatabase(db_file, text_file):
     # commit the transaction on the connection object
     con.commit()
 
+    # DEBUG
     # test that the values were added to the table
-    res = cur.execute("SELECT text FROM headlines")
-    print(res.fetchall())
+    #res = cur.execute("SELECT text FROM headlines")
+    #print(res.fetchall())
 
     con.close()
+    print("Done.")
     return
 
 def createTokenDatabase(db_file_path):
@@ -408,6 +416,7 @@ def dumpAll():
     res = cur.execute('''SELECT text FROM headlines''')
 
     print("Gathering all Headline Snaps to be exported ...")
+    sleep(1)
     for snap in res.fetchall():
         # clean snaps from fetchall output
         snap = snap[0].strip(' ') + '\n'
@@ -416,10 +425,12 @@ def dumpAll():
 
     # write all snaps from all_snaps to dump.txt
     print("Dumping all Headline Snaps to a text file ...")
+    sleep(1)
     with open('./data/dump.txt', 'w', encoding='utf-8') as dump_file:
         dump_file.writelines(all_snaps)
 
     print('Done.')
-    print('Output is available at /data/dump.txt.')
+    sleep(1)
+    print('Output is available at /data/dump.txt')
     con.close()
     
