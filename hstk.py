@@ -2,6 +2,7 @@ from Functions import *
 from Analysis import *
 from Tokenizer import *
 from Trigrams import *
+from Visualizer import *
 from argparse import ArgumentParser
 
 # this only runs if "initialized":false in cache.json
@@ -34,11 +35,12 @@ parser.add_argument("-r", "--random", metavar=("INT"), nargs="?", const=1, type=
 # convert : stores True when used
 parser.add_argument("-c", "--convert", action="store_true", help="convert headline snap image files in /data/src/raw then add them to the database")
 # dump : stores True when used
-parser.add_argument("-d", "--dump", action="store_true", help="dump all headline snaps from the database to a text file at /data/dump.txt")
+parser.add_argument("-x", "--export", action="store_true", help="dump all headline snaps from the database to a text file at /data/dump.txt")
 # search : takes one mandatory argument of type str
 parser.add_argument("-s", "--search", metavar=("STR"), type=str, help="search the headline snap database for snaps containing STR")
+# delete : stores True when used
+parser.add_argument("-d", "--delete", action="store_true", help="delete all data from the headline and token databases")
 
-# parser.add_argument("-v", "--visualizer")
 
 # SUBPARSER: Define options
 
@@ -48,6 +50,9 @@ tokenizer_parser.add_argument("-u", "--update_tokens", action="store_true", help
 
 trigram_parser = subparsers.add_parser("trigrams", help="trigram model commands")
 trigram_parser.add_argument("-g", "--generate", action="store_true", help="train a trigram model on the database and generate a new headline")
+
+visualizer_parser = subparsers.add_parser("visualizer", help="visualization commands")
+visualizer_parser.add_argument("-w", "--word_cloud", action="store_true", help="generate and display a word cloud of the most common words in the database")
 
 # parse arguments from command line input and save to `args`
 args = parser.parse_args()
@@ -60,11 +65,14 @@ if args.convert:
     convertDirectory(r"./data/src/raw")
     addToSnapDatabase(db_file=r"./data/db/hs.db", text_file=r"./data/src/text/ocr_output.txt")
 
-if args.dump:
+if args.export:
     dumpAll()
 
 if args.add:
     addToSnapDatabase(db_file=r"./data/db/hs.db", text_file=r"./data/src/text/ocr_output.txt")
+
+if args.delete:
+    deleteDatabases(hsdb_path=r"./data/db/hs.db",token_db_path=r"./data/db/tokens.db")
 
 # SUBPARSER CHECKS
 
@@ -78,10 +86,15 @@ if args.subparser == "tokenizer":
 if args.subparser == "trigrams":
     # check if individual subparser options were used
     if args.generate:
-        #dumpCorpus()
+        #dumpCorpus() TODO uncomment this
         trigram_model = trainTrigramModel(corpus_path)
         print(generateSentence(trigram_model))
 
+if args.subparser == "visualizer":
+    # check if individual subparser options were used
+    if args.word_cloud:
+        #dumpCorpus() TODO uncomment this
+        generateWordCloud()
 
 # DEBUG tokenizer and clean function test
 #print(tokenizeSnap("this,    Is a Test::: super-cool man-eating test. test! snap"))
@@ -91,6 +104,8 @@ if args.subparser == "trigrams":
 sleep(2)
 # DEBUG print Namespace to see arg values, then exit
 print('\n' + 'DEBUG: ' + str(args) + '\n')
+
+
 
 print("Exiting ...")
 raise SystemExit(1)

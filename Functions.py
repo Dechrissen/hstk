@@ -314,9 +314,10 @@ def addToTokenDatabase(db_file, token, increment):
     # commit the transaction on the connection object
     con.commit()
 
+    # DEBUG
     # test that the values were added to the table
-    res = cur.execute("SELECT * FROM tokens")
-    print(res.fetchall())
+    #res = cur.execute("SELECT * FROM tokens")
+    #print(res.fetchall())
 
     con.close()
     return
@@ -391,6 +392,7 @@ def dumpCorpus():
         dump_file.writelines(all_cleaned_snaps)
 
     con.close()
+    return
 
 def dumpAll():
     '''Dumps all Headline Snaps in the database to a text file.
@@ -433,4 +435,47 @@ def dumpAll():
     sleep(1)
     print('Output is available at /data/dump.txt')
     con.close()
+    return
+
+def deleteDatabases(hsdb_path,token_db_path):
+    '''Deletes and recreates both the Headline Snap and token database files.
+    
+    args
+        hsdb_path : path to the headline snap database file
+        token_db_path : path to the token database file
+    
+    returns
+        null
+    '''
+    # delete headline snap db
+    con = None
+    try:
+        con = sqlite3.connect(hsdb_path)
+    except sqlite3.Error as e:
+        print(e)
+        return
+
+    cur = con.cursor()
+    cur.execute("""DROP TABLE headlines""")
+    con.close()
+
+    # recreate an empty headline snap db
+    createSnapDatabase(hsdb_path)
+
+    # delete token db
+    con = None
+    try:
+        con = sqlite3.connect(token_db_path)
+    except sqlite3.Error as e:
+        print(e)
+        return
+
+    cur = con.cursor()
+    cur.execute("""DROP TABLE tokens""")
+    con.close()
+
+    # recreate an empty headline snap db
+    createTokenDatabase(token_db_path)
+
+    return
     
