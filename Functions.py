@@ -27,6 +27,7 @@ def initialize():
         with open("cache.json", "w") as jsonFile:
             json.dump(data, jsonFile)
         print("Cache file created.")
+
     
     # check if initialize has been run successfully already
     # if yes, return
@@ -35,6 +36,12 @@ def initialize():
 
     # if no, run all the initialize steps
     print("Performing first-time setup ...")
+
+    # create config file, filled in with filters for clean-a9t9.py
+    with open("config.json", "w") as jsonFile:
+        data = json.loads("""{"filters":["Send a chat", "CHAT"]}""")
+        json.dump(data, jsonFile)
+    print("Config file created.")
 
     # create the local directories (which should not exist on remote)
     dirs = ['./data/db', './data/src/raw', './data/src/text']
@@ -201,12 +208,12 @@ def createSnapDatabase(db_file_path):
     print("Empty Headline Snap database created.")
     return
 
-def addToSnapDatabase(db_file, text_file):
+def addToSnapDatabase(db_file, src_text_dir):
     """Adds Headline Snaps from a text file into the database.
 
     args
         db_file : the path to the database
-        text_file : the file containing lines of Headline Snaps as text
+        src_text_dir : the file containing lines of Headline Snaps as text
 
     returns
         null
@@ -220,16 +227,18 @@ def addToSnapDatabase(db_file, text_file):
 
     cur = con.cursor()
 
-    print("Adding Headline Snaps from " + str(text_file) + " to the database ...")
+    print("Adding Headline Snaps from files in " + str(src_text_dir) + " to the database ...")
     sleep(1)
 
-    # open the text file with Headline Snaps
-    with open(text_file, mode='r', encoding='utf-8') as file:
-        for snap in file:
-            snap = snap.split('\n')[0]
-            # add snap to the table (note the comma after snap to make it a tuple)
-            cur.execute('''INSERT OR IGNORE INTO headlines(text)
-                           VALUES(?)''', (snap,))
+    # open all text files in /data/src/text
+    for file in os.listdir(src_text_dir):
+        if file.endswith(".txt"):
+            with open(os.path.join(src_text_dir,file), mode='r', encoding='utf-8') as f:
+                for snap in f:
+                    snap = snap.split('\n')[0]
+                    # add snap to the table (note the comma after snap to make it a tuple)
+                    cur.execute('''INSERT OR IGNORE INTO headlines(text)
+                                VALUES(?)''', (snap,))
 
     # commit the transaction on the connection object
     con.commit()

@@ -8,17 +8,20 @@ In some cases, you might need to use [a9t9](https://github.com/A9T9/Free-OCR-Sof
 
 <p align="center"><img src="./a9t9.png" alt="a9t9 example" style="width: 60%;" /></p>
 
-Now you can invoke the script `clean-a9t9.py` by running
+Add to the terms define in the `filters` list in `/config.json`, so that terms that might show up in your images get properly filtered out by the script.
+
+`cd` to the `/scripts` directory.
+
+Now, invoke the script `clean-a9t9.py` by running:
 
 ```
 python clean-a9t9.py
 ```
 
-The cleaned file will be output to `/hstk/scripts/cleaned.txt`.
+The cleaned file will be output to `/data/src/text/a9t9_cleaned.txt`.
 
-Paste the contents of this file into `/hstk/data/src/text/ocr_output.txt`.
+Then, to add the contents of all the `.txt` files in `/data/src/text` to the database, run:
 
-Then, to add the contents of `/hstk/data/src/text/ocr_output.txt` to the database, run:
 ```
 python hstk.py -a
 ```

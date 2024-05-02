@@ -37,9 +37,9 @@ parser.add_argument("-c", "--convert", action="store_true", help="convert headli
 # dump : stores True when used
 parser.add_argument("-x", "--export", action="store_true", help="dump all headline snaps from the database to a text file at /data/dump.txt")
 # search : takes one mandatory argument of type str
-parser.add_argument("-s", "--search", metavar=("STR"), type=str, help="search the headline snap database for snaps containing STR")
+parser.add_argument("-s", "--search", metavar=("STR"), type=str, help="search the headline snap database for snaps containing STR (in quotes)")
 # delete : stores True when used
-parser.add_argument("-d", "--delete", action="store_true", help="delete all data from the headline and token databases")
+parser.add_argument("-d", "--delete", action="store_true", help="delete all data from the headline snap and token databases")
 
 
 # SUBPARSER: Define options
@@ -63,13 +63,13 @@ getRandomSnap(args.random)
 searchSnaps(args.search)
 if args.convert:
     convertDirectory(r"./data/src/raw")
-    addToSnapDatabase(db_file=r"./data/db/hs.db", text_file=r"./data/src/text/ocr_output.txt")
+    addToSnapDatabase(db_file=r"./data/db/hs.db", src_text_dir=r"./data/src/text")
 
 if args.export:
     dumpAll()
 
 if args.add:
-    addToSnapDatabase(db_file=r"./data/db/hs.db", text_file=r"./data/src/text/ocr_output.txt")
+    addToSnapDatabase(db_file=r"./data/db/hs.db", src_text_dir=r"./data/src/text")
 
 if args.delete:
     deleteDatabases(hsdb_path=r"./data/db/hs.db",token_db_path=r"./data/db/tokens.db")
