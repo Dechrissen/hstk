@@ -27,7 +27,7 @@ subparsers = parser.add_subparsers(
 
 # MAIN PARSER: Define options
 # add : stores True when used
-parser.add_argument("-a", "--add", action="store_true", help="adds the current contents of /data/src/text/ocr_output.txt to the database")
+parser.add_argument("-a", "--add", action="store_true", help="adds the current contents of the files in /data/src/text to the database")
 # total: stores True when used
 parser.add_argument("-t", "--total", action="store_true", help="display the total number of headline snaps in the databse")
 # random : takes one optional argument of type int, where its default is 1 (const=1)
@@ -88,7 +88,7 @@ if args.subparser == "trigrams":
     if args.generate:
         #dumpCorpus() TODO uncomment this
         trigram_model = trainTrigramModel(corpus_path)
-        print(generateSentence(trigram_model))
+        print(generateSentence(trigram_model, corpus_path))
 
 if args.subparser == "visualizer":
     # check if individual subparser options were used
@@ -105,7 +105,8 @@ sleep(2)
 # DEBUG print Namespace to see arg values, then exit
 print('\n' + 'DEBUG: ' + str(args) + '\n')
 
-
+#test_trigram_model = trainTrigramModel(r"./data/test_corp.txt")
+#print(generateSentence(test_trigram_model, r"./data/test_corp.txt"))
 
 print("Exiting ...")
 raise SystemExit(1)

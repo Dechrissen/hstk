@@ -3,8 +3,6 @@ from collections import defaultdict
 import random
 from pathlib import Path
 from time import sleep
-import os
-import json
 
 # must run dumpCorpus before this file exists
 corpus_path = r"./data/corpus.txt"
@@ -42,7 +40,7 @@ def trainTrigramModel(corpus_path):
     print("Done.\n")
     return model
 
-def generateSentence(trigram_model):
+def generateSentence(trigram_model, corpus_path):
     '''Generates a sentence according to a trigram model.
     
     args
@@ -52,11 +50,16 @@ def generateSentence(trigram_model):
         generated : the generated sentence
     '''
     text = [None, None]
+    generated = ''
     sentence_finished = False
+    # instantiate counter to keep track of times tried to generate a novel sentence
+    fail_counter = 0
+    max_tries = 10
 
     sleep(1)
     print("Generating new Headline Snap ...\n")
     sleep(1)
+
     while not sentence_finished:
         r = random.random()
         accumulator = .0
@@ -65,9 +68,45 @@ def generateSentence(trigram_model):
             if accumulator >= r:
                 text.append(word)
                 break
-        if text[-2:] == [None, None]:
+        # preemptively create the generated sentence (string) here, because we need to check it against the corpus anyway
+        generated = ' '.join([t for t in text if t])
+        # check if the sentence is complete AND not present in the corpus verbatim
+        if (text[-2:] == [None, None]) and not checkAgainstCorpus(generated,corpus_path):
             sentence_finished = True
+        # else (meaning it is in the corpus), check only if it's finished
+        elif text[-2:] == [None, None]:
+            # increment the number of novel sentence generation tries
+            fail_counter += 1           
+            # DEBUG
+            #print("Times failed: ", fail_counter)
+            if fail_counter == max_tries:
+                # if we reach max tries, give up and return the sentence anyway
+                sentence_finished = True
+                continue
+            # set the sentence back to the starting value (empty with padding) before trying again
+            text = [None, None]
 
-    generated = ' '.join([t for t in text if t])
+    disclaimer = "\n" if (fail_counter < max_tries) else " (maximum reached; sentence not novel)\n"
+    print("Non-novel generations before novelty achieved:", str(fail_counter) + disclaimer)
+    #generated = ' '.join([t for t in text if t])
     return generated
 
+def checkAgainstCorpus(sentence,corpus_path):
+    '''Checks if a given sentence is present in a given corpus file.
+    
+    args
+        sentence : the sentence to check
+        corpus_path : the path to the corpus file to be compared to
+
+    returns
+        bool
+    '''
+    with open(corpus_path, 'r', encoding='utf-8') as corpus_file:
+        # need to use .read().splitlines() here as opposed to readlines()
+        # so we do not get '\n' at the end of every list item
+        # this allows the sentence being checked against the list to match if necessary
+        sents = corpus_file.read().splitlines()
+        if sentence in sents:
+            return True
+        else:
+            return False

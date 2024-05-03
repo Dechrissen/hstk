@@ -1,12 +1,12 @@
 # hstk – Headline Snap Toolkit
 
-`hstk` provides a collection of tools for creating a database of [Headline Snaps](./assets/WHAT.md) and interfacing with the database. Some of its built-in tools for data analysis include language modeling and data visualization functions. It can also synthesize new language data based on a trigram model.
+`hstk` provides a collection of tools for creating a database of fabricated news headlines ([Headline Snaps](./assets/WHAT.md)) and interfacing with the database. Some of its built-in tools for data analysis include language modeling and data visualization functions. It can also synthesize new language data based on a trigram model.
 
 ## Table of Contents
 
 - [Initial setup](#initial-setup)
 - [Prerequisites](#prerequisites)
-- [Usage](#usage)
+- [Usage and features](#usage)
 - [Converting non-compliant Headline Snaps](#converting-non-compliant-headline-snaps)
 
 
@@ -54,17 +54,52 @@ python hstk.py -h
 
 ### On data persistence
 
-When you run this software for the first time, a directory called `/data` will be created locally within the project directory. This is where you will place your own source image data (in `/data/src/raw`), and where various generated data will be output by the software.
+When you run this toolkit for the first time, a directory called `/data` will be created locally within the project directory. This is where you will place your own source image data (in `/data/src/raw`), and where various generated data will be output by the tools.
 
-The idea is that the data directory (or at least, the database files that get created in `/data/db`) should persist regardless of whatever subcommands you run with `hstk`. The source data you provide can theoretically stay in the data directory forever, and new data can be added at any time. Updates to this software, for example, shouldn't affect existing data in your local directory.
+The idea is that the data directory (or at least, the database files that get created in `/data/db`) should persist regardless of whatever subcommands you run with `hstk`. The source data you provide can theoretically stay in the data directory forever, and new data can be added at any time. Updates to this toolkit, for example, shouldn't affect existing data in your local directory.
 
 The source data is what's used to generate the entries in the database files (e.g. `/data/db/hs.db`). Whenever new source data is added to `/data/src/raw`, running the conversion command (`python hstk.py -c`) will update the database.
 
 Similarly, newline-separated files containing Headline Snaps as text can be added to `/data/src/text` at any time, with a `.txt` extension. Then `python hstk.py -a` will add those to the database.
 
-### More usage examples
+### Features
 
+There are several commands at your disposal in this toolkit.
 
+command | flag | description
+--- | --- | ---
+add | `-a` | adds the current contents of the files in `/data/src/text` to the database
+total | `-t` | output the total number of Headline Snaps in the database
+random | `-r` | print a random Headline Snap from the database
+convert | `-c` | convert the Headline Snap image files in `/data/src/raw` to text via OCR (optical character recognition)
+export | `-x` | dump all headline snaps from the database to a text file at `/data/dump.txt`
+search | `-s` | query the database for Headline Snaps containing a provided search phrase
+delete | `-d` | delete all data from the Headline Snap and token databases
+
+Note that additional basic commands exist; run the toolkit with the `-h` flag to see them all.
+
+Additional functionality exists via **subcommands**, outlined below.
+
+#### Via the `tokenizer` subcommand ...
+command | flag | description
+--- | --- | ---
+update_tokens | `-u` | iterate through all Headline Snaps in the database and add all unique tokens to a separate token database, keeping track of counts
+
+#### Via the `trigrams` subcommand ...
+command | flag | description
+--- | --- | ---
+generate | `-g` | train a trigram language model on the database and synthesize a new Headline Snap based on it
+
+#### Via the `visualizer` subcommand ...
+command | flag | description
+--- | --- | ---
+word_cloud | `-w` | generate a word cloud representing the most commonly occurring terms in the database
+
+For detailed help with each subcommand, run:
+
+```
+python htsk.py <SUBCOMMAND> -h
+```
 
 ## Converting non-compliant Headline Snaps
 
