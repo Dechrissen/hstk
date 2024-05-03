@@ -1,6 +1,6 @@
 # What are "Headline Snaps"?
 
-Headline Snaps are part of an experiment [a friend](https://github.com/Quadrixis) and I started some time during our college years.
+Headline Snaps are part of an experiment a friend and I started some time during our college years.
 
 Essentially, they are **fabricated news headlines** inspired mostly by real world events, but exaggerated for comedic effect. Specifically, the source data we're working with is `.png` or `.jpeg` files, created via Snapchat, with a plain black background and white text as the news headline.
 

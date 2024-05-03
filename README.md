@@ -4,13 +4,13 @@
 
 ## Table of Contents
 
-- [Initial setup](#initial-setup)
-- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Setup](#setup)
 - [Usage and features](#usage)
 - [Converting non-compliant Headline Snaps](#converting-non-compliant-headline-snaps)
 
 
-## Initial setup
+## Installation
 
 First, clone this repository (or fork your own copy, then clone that).
 
@@ -18,7 +18,7 @@ First, clone this repository (or fork your own copy, then clone that).
 git clone git@github.com:Dechrissen/hstk.git
 ```
 
-## Prerequisites
+## Setup
 
 Ensure you have Python 3 installed.
 

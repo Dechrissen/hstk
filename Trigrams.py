@@ -57,7 +57,7 @@ def generateSentence(trigram_model, corpus_path):
     max_tries = 10
 
     sleep(1)
-    print("Generating new Headline Snap ...\n")
+    print("Generating a new Headline Snap ...\n")
     sleep(1)
 
     while not sentence_finished:
