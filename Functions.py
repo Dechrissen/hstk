@@ -36,6 +36,7 @@ def initialize():
 
     # if no, run all the initialize steps
     print("Performing first-time setup ...")
+    sleep(1)
 
     # create config file, filled in with filters for clean-a9t9.py
     with open("config.json", "w") as jsonFile:
@@ -59,6 +60,7 @@ def initialize():
     with open("cache.json", "w") as jsonFile:
         json.dump(cache, jsonFile)
 
+    sleep(1)
     print("Setup complete.")
     return
 

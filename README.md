@@ -41,6 +41,12 @@ The Tesseract executable (engine) is required for the OCR backend in this toolki
 - [Linux instructions](https://tesseract-ocr.github.io/tessdoc/Installation.html)
     - no special location instructions; just install via your distro's package manager
 
+To perform the first-time setup, run:
+```
+python hstk.py
+```
+without any arguments. This will initialize the data directories for use.
+
 
 ## Usage
 

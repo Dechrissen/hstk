@@ -18,7 +18,7 @@ Now, invoke the script `clean-a9t9.py` by running:
 python clean-a9t9.py
 ```
 
-The cleaned file will be output to `/data/src/text/a9t9_cleaned.txt`.
+The cleaned file will be output to `/data/src/text/a9t9_cleaned.txt`. It's recommended to review the sentences in the output file; there could still be some weird artifacts in the text if the background was not completely black.
 
 Then, to add the contents of all the `.txt` files in `/data/src/text` to the database, run:
 
