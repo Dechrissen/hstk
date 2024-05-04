@@ -45,14 +45,14 @@ parser.add_argument("-d", "--delete", action="store_true", help="delete all data
 # SUBPARSER: Define options
 
 # add subparser arguments
-tokenizer_parser = subparsers.add_parser("tokenizer", help="tokenizer commands")
+tokenizer_parser = subparsers.add_parser("tokenizer", help="headline snap tokenizer commands")
 tokenizer_parser.add_argument("-u", "--update_tokens", action="store_true", help="update the token database with new counts")
 tokenizer_parser.add_argument("-n", "--number_of_tokens", metavar=("TKN"), type=str, help="print number of times some individual token TKN appears in the database")
 
-trigram_parser = subparsers.add_parser("trigrams", help="trigram model commands")
+trigram_parser = subparsers.add_parser("trigrams", help="trigram language model commands")
 trigram_parser.add_argument("-g", "--generate", action="store_true", help="train a trigram model on the database and generate a new headline")
 
-visualizer_parser = subparsers.add_parser("visualizer", help="visualization commands")
+visualizer_parser = subparsers.add_parser("visualizer", help="data visualization commands")
 visualizer_parser.add_argument("-w", "--word_cloud", action="store_true", help="generate and display a word cloud of the most common words in the database")
 
 # parse arguments from command line input and save to `args`
@@ -90,14 +90,14 @@ if args.subparser == "tokenizer":
 if args.subparser == "trigrams":
     # check if individual subparser options were used
     if args.generate:
-        #dumpCorpus() TODO uncomment this
+        dumpCorpus()
         trigram_model = trainTrigramModel(corpus_path)
-        print(generateSentence(trigram_model, corpus_path))
+        print('\t' + generateSentence(trigram_model, corpus_path))
 
 if args.subparser == "visualizer":
     # check if individual subparser options were used
     if args.word_cloud:
-        #dumpCorpus() TODO uncomment this
+        dumpCorpus()
         generateWordCloud()
 
 # DEBUG tokenizer and clean function test

@@ -3,7 +3,7 @@ from time import sleep
 
 
 def searchSnaps(phrase):
-    """Searches through snaps in the Headline Snap database for matches on the given string PHRASE.
+    """Searches through snaps in the Headline Snap database for matches on the given string.
 
     args
         phrase : string to be searched from -s args option
@@ -32,13 +32,13 @@ def searchSnaps(phrase):
             return
         
         # max amount of matches
-        search_cap = 10
+        search_cap = 20
         # initialize a count for printing numbers before each snap
         count = 1
         search_output = '\n'
         for match in matches[:search_cap]:
             # append each match to search_output
-            search_output = search_output + str(count) + ') ' + match[0] + '\n'
+            search_output = search_output + '\t' + str(count) + ') ' + match[0] + '\n'
             count += 1
         print(search_output)
         return
@@ -101,7 +101,7 @@ def getRandomSnap(number):
         for snap in res.fetchall()[:number]:
             # clean up snap from res.fetchall() output
             snap = snap[0].strip(' ')
-            print(str(count) + ') ' + snap)
+            print('\t' + str(count) + ') ' + snap)
             count += 1
 
         con.close()

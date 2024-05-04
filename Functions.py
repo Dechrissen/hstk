@@ -350,6 +350,23 @@ def createDirectory(path):
     else:
         return
 
+def isOddSnap(snap):
+    '''Checks whether a given snap contains symbols that suggest it doesn't follow 
+    news headline format, and thus should be filtered out from the corpus that will 
+    be used for model training.
+    
+    args
+        snap : the snap to be checked for odd symbols
+
+    returns
+        bool
+    '''
+    oddities = ['(', ')', '!']
+    for symbol in oddities:
+        if symbol in snap:
+            return True
+    return False
+
 def cleanText(text):
     '''Cleans a string, removing punctuation and making lower case.
     Preserves phrasal (hypenated) adjectives.
@@ -394,9 +411,11 @@ def dumpCorpus():
 
     for snap in res.fetchall():
         # clean snaps from fetchall output
-        snap = cleanText(snap[0]) + '\n'
-        # append all cleaned snaps to all_cleaned_snaps list
-        all_cleaned_snaps.append(snap)
+        snap = snap[0].strip(' ') + '\n'
+        # check if the snap is 'odd', and thus shouldn't be in the corpus for training
+        if not isOddSnap(snap):
+            # if not, append cleaned snap to all_cleaned_snaps list
+            all_cleaned_snaps.append(snap)
     
     # write all snaps from all_cleaned_snaps to corpus.txt
     with open('./data/corpus.txt', 'w', encoding='utf-8') as dump_file:

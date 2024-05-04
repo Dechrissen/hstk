@@ -55,6 +55,7 @@ def generateWordCloud():
     plt.axis('off')
     plt.title("Headline Snaps - Common Words", fontsize=16)
     print("Done.")
-    sleep(2)
+    sleep(1)
+    print('Displaying word cloud ...')
     plt.show()
     return
