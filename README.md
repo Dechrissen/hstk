@@ -18,6 +18,8 @@ First, clone this repository (or fork your own copy, then clone that).
 git clone git@github.com:Dechrissen/hstk.git
 ```
 
+Alternatively, you can download the latest release's source code from the [releases](https://github.com/Dechrissen/hstk/releases) section of this repository. In that case, you'd need to extract it.
+
 ## Setup
 
 Ensure you have Python 3 installed.
