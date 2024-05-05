@@ -43,7 +43,7 @@ parser.add_argument("-c", "--convert", action="store_true", help="convert headli
 # dump : stores True when used
 parser.add_argument("-x", "--export", action="store_true", help="dump all headline snaps from the database to a text file at /data/dump.txt")
 # search : takes one mandatory argument of type str
-parser.add_argument("-s", "--search", metavar=("STR"), type=str, help="search the headline snap database for entries containing STR (in quotes)")
+parser.add_argument("-s", "--search", metavar=("STR"), type=str, help="query the headline snap database for entries containing STR (in quotes)")
 # delete : stores True when used
 parser.add_argument("-d", "--delete", action="store_true", help="delete all data from the headline snap and token databases")
 
@@ -73,7 +73,7 @@ if args.convert:
     addToSnapDatabase(hs_db_path, src_text_path)
 
 if args.export:
-    dumpAll()
+    dumpAll(hs_db_path)
 
 if args.add:
     addToSnapDatabase(hs_db_path, src_text_path)
@@ -114,17 +114,13 @@ if args.subparser == "visualizer":
         dumpCorpus(hs_db_path) # so the generateWordCloud() function has an up-to-date corpus to work with
         generateWordCloud()
 
-# DEBUG tokenizer and clean function test
+# DEBUG tokenizer test
 #print(tokenizeSnap("this,    Is a Test::: super-cool man-eating test. test! snap"))
 #addToTokenDatabase(r"./data/db/tokens.db", "parkour", 1)
 
-
-sleep(1)
 # DEBUG print Namespace to see arg values, then exit
 #print('\n' + 'DEBUG: ' + str(args) + '\n')
 
-#test_trigram_model = trainTrigramModel(r"./data/test_corp.txt")
-#print(generateSentence(test_trigram_model, r"./data/test_corp.txt"))
-
+sleep(1)
 print("\nExiting ...")
 raise SystemExit(1)

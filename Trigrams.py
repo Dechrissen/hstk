@@ -34,7 +34,7 @@ def trainTrigramModel(corpus_path):
         for w3 in model[w1_w2]:
             model[w1_w2][w3] /= total_count
     sleep(1)
-    print("Done.\n")
+    print("Done.")
     return model
 
 def generateSentence(trigram_model, corpus_path):

@@ -74,15 +74,15 @@ There are several commands at your disposal in this toolkit.
 
 command | flag | description
 --- | --- | ---
-add | `-a` | adds the current contents of the files in `/data/src/text` to the database
+add | `-a` | adds the current contents of the files in `/data/src/text` (newline-separated) to the database
 total | `-t` | output the total number of Headline Snaps in the database
 random | `-r` | print a random Headline Snap from the database
-convert | `-c` | convert the Headline Snap image files in `/data/src/raw` to text via OCR (optical character recognition)
-export | `-x` | dump all headline snaps from the database to a text file at `/data/dump.txt`
+convert | `-c` | convert the Headline Snap image files in `/data/src/raw` to text via OCR and output them to `/data/text/ocr_output.txt`
+export | `-x` | dump all Headline Snaps from the database to a text file at `/data/dump.txt`
 search | `-s` | query the database for Headline Snaps containing a provided search phrase
 delete | `-d` | delete all data from the Headline Snap and token databases
 
-Note that additional basic commands exist; run the toolkit with the `-h` flag to see them all.
+Note: run the toolkit with the `-h` flag to see all commands.
 
 Additional functionality exists via **subcommands**, outlined below.
 
