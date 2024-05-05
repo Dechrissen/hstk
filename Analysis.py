@@ -31,6 +31,10 @@ def searchSnaps(phrase):
             print(search_output)
             return
         
+        # commit the transaction on the connection object
+        con.commit()
+        con.close()
+
         # max amount of matches
         search_cap = 20
         # initialize a count for printing numbers before each snap
@@ -68,6 +72,8 @@ def getTotalSnaps(total=False):
         # select every row in headlines table
         res = cur.execute("SELECT Count(*) FROM headlines")
         print("\nTotal:", res.fetchone()[0])
+        # commit the transaction on the connection object
+        con.commit()
         con.close()
         return
     else:

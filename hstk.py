@@ -9,6 +9,11 @@ from argparse import ArgumentParser
 # so if the project has been initialized once, it won't run again
 initialize()
 
+# define some relevant paths
+hs_db_path = r"./data/db/hs.db"
+token_db_path = r"./data/db/tokens.db"
+src_images_path = r"./data/src/raw"
+src_text_path=r"./data/src/text"
 
 # ARGUMENT PARSING
 # ----------------
@@ -47,7 +52,7 @@ parser.add_argument("-d", "--delete", action="store_true", help="delete all data
 # add subparser arguments
 tokenizer_parser = subparsers.add_parser("tokenizer", help="headline snap tokenizer commands")
 tokenizer_parser.add_argument("-u", "--update_tokens", action="store_true", help="update the token database with new counts")
-tokenizer_parser.add_argument("-n", "--number_of_tokens", metavar=("TKN"), type=str, help="print number of times some individual token TKN appears in the database")
+tokenizer_parser.add_argument("-q", "--query_tokens", metavar=("TKN"), type=str, help="print number of times some individual token TKN (in quotes) appears in the database")
 
 trigram_parser = subparsers.add_parser("trigrams", help="trigram language model commands")
 trigram_parser.add_argument("-g", "--generate", action="store_true", help="train a trigram model on the database and generate a new headline")
@@ -63,17 +68,17 @@ getTotalSnaps(args.total)
 getRandomSnap(args.random)
 searchSnaps(args.search)
 if args.convert:
-    convertDirectory(r"./data/src/raw")
-    addToSnapDatabase(db_file=r"./data/db/hs.db", src_text_dir=r"./data/src/text")
+    convertDirectory(src_images_path)
+    addToSnapDatabase(hs_db_path, src_text_path)
 
 if args.export:
     dumpAll()
 
 if args.add:
-    addToSnapDatabase(db_file=r"./data/db/hs.db", src_text_dir=r"./data/src/text")
+    addToSnapDatabase(hs_db_path, src_text_path)
 
 if args.delete:
-    deleteDatabases(hsdb_path=r"./data/db/hs.db",token_db_path=r"./data/db/tokens.db")
+    deleteDatabases(hs_db_path, token_db_path)
 
 # SUBPARSER CHECKS
 
@@ -81,33 +86,41 @@ if args.delete:
 if args.subparser == "tokenizer":
     # check if individual subparser options were used
     if args.update_tokens:
-        print("update_tokens function is under construction")
-        #updateTokens()
-    if args.number_of_tokens:
-        print("number_of_tokens function is under construction")
+        dumpCorpus() # so the updateTokens() function has an up-to-date corpus to work with
+        updateTokens(token_db_path)
+    if args.query_tokens:
+        token = cleanText(args.query_tokens)
+        print("Querying token database for token \"" + token + "\" ...")
+        sleep(1)
+        count = getTokenCount(token_db_path, token)
+        if count != 0:
+            print("Count:", count)
+        else:
+            print("Token not present in database.")
+
 
 # check to see if trigrams subparser was invoked
 if args.subparser == "trigrams":
     # check if individual subparser options were used
     if args.generate:
-        dumpCorpus()
+        dumpCorpus() # so the trainTrigramModel() function has an up-to-date corpus to work with
         trigram_model = trainTrigramModel(corpus_path)
         print('\t' + generateSentence(trigram_model, corpus_path))
 
 if args.subparser == "visualizer":
     # check if individual subparser options were used
     if args.word_cloud:
-        dumpCorpus()
+        dumpCorpus() # so the generateWordCloud() function has an up-to-date corpus to work with
         generateWordCloud()
 
 # DEBUG tokenizer and clean function test
 #print(tokenizeSnap("this,    Is a Test::: super-cool man-eating test. test! snap"))
-#print(addToTokenDatabase(r"./data/db/tokens.db", "vehicle", 1))
+#addToTokenDatabase(r"./data/db/tokens.db", "parkour", 1)
 
 
 sleep(1)
 # DEBUG print Namespace to see arg values, then exit
-print('\n' + 'DEBUG: ' + str(args) + '\n')
+#print('\n' + 'DEBUG: ' + str(args) + '\n')
 
 #test_trigram_model = trainTrigramModel(r"./data/test_corp.txt")
 #print(generateSentence(test_trigram_model, r"./data/test_corp.txt"))

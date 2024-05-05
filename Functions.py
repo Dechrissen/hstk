@@ -205,7 +205,9 @@ def createSnapDatabase(db_file_path):
     except sqlite3.Error as e:
         print(e)
         return
-
+    
+    # commit the transaction on the connection object
+    con.commit()
     con.close()
     print("Empty Headline Snap database created.")
     return
@@ -283,15 +285,17 @@ def createTokenDatabase(db_file_path):
         print(e)
         return
 
+    # commit the transaction on the connection object
+    con.commit()
     con.close()
     print("Empty token database created.")
     return
 
-def addToTokenDatabase(db_file, token, increment):
+def addToTokenDatabase(token_db_path, token, increment):
     """Adds tokens to the token database and/or updates a token's count.
 
     args
-        db_file : the path to the database
+        token_db_path : the path to the database
         token : the token to be added to the database
         increment : the amount to increment a token's count by (1 means it's new)
 
@@ -300,7 +304,7 @@ def addToTokenDatabase(db_file, token, increment):
     """
     # connect to the database
     try:
-        con = sqlite3.connect(db_file)
+        con = sqlite3.connect(token_db_path)
     except sqlite3.Error as e:
         print(e)
         return
@@ -369,7 +373,7 @@ def isOddSnap(snap):
 
 def cleanText(text):
     '''Cleans a string, removing punctuation and making lower case.
-    Preserves phrasal (hypenated) adjectives.
+    Preserves phrasal (hyphenated) adjectives and apostrophes.
 
     args
         text : the string to clean
@@ -421,6 +425,8 @@ def dumpCorpus():
     with open('./data/corpus.txt', 'w', encoding='utf-8') as dump_file:
         dump_file.writelines(all_cleaned_snaps)
 
+    # commit the transaction on the connection object
+    con.commit()
     con.close()
     return
 
@@ -464,6 +470,8 @@ def dumpAll():
     print('Done.')
     sleep(1)
     print('Output is available at /data/dump.txt')
+    # commit the transaction on the connection object
+    con.commit()
     con.close()
     return
 
@@ -487,7 +495,10 @@ def deleteDatabases(hsdb_path,token_db_path):
 
     cur = con.cursor()
     cur.execute("""DROP TABLE headlines""")
+    # commit the transaction on the connection object
+    con.commit()
     con.close()
+    print("Headline Snap database file cleared.")
 
     # recreate an empty headline snap db
     createSnapDatabase(hsdb_path)
@@ -502,9 +513,12 @@ def deleteDatabases(hsdb_path,token_db_path):
 
     cur = con.cursor()
     cur.execute("""DROP TABLE tokens""")
+    # commit the transaction on the connection object
+    con.commit()
     con.close()
+    print("Token database file cleared.")
 
-    # recreate an empty headline snap db
+    # recreate an empty token db
     createTokenDatabase(token_db_path)
 
     return
