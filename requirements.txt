@@ -51,7 +51,7 @@ regex==2024.4.28
     # via nltk
 six==1.16.0
     # via python-dateutil
-tqdm==4.66.2
+tqdm==4.66.3
     # via nltk
 wordcloud==1.9.3
     # via -r requirements.in
