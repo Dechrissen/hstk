@@ -4,9 +4,6 @@ import random
 from pathlib import Path
 from time import sleep
 
-# must run dumpCorpus before this file exists
-corpus_path = r"./data/corpus.txt"
-
 def trainTrigramModel(corpus_path):
     '''Trains a trigram language model.
     

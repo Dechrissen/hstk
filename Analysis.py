@@ -2,10 +2,11 @@ import sqlite3
 from time import sleep
 
 
-def searchSnaps(phrase):
+def searchSnaps(hs_db_path, phrase):
     """Searches through snaps in the Headline Snap database for matches on the given string.
 
     args
+        hs_db_path : the path to the headline snap database
         phrase : string to be searched from -s args option
 
     returns
@@ -15,10 +16,10 @@ def searchSnaps(phrase):
         print("Searching Headline Snap database ...")
         sleep(1)
         search_output = '\nNO RESULTS\n'
-        db_file = r"./data/db/hs.db"
+
         # connect to the database
         try:
-            con = sqlite3.connect(db_file)
+            con = sqlite3.connect(hs_db_path)
         except sqlite3.Error as e:
             print(e)
             return
@@ -49,10 +50,11 @@ def searchSnaps(phrase):
     else:
         return
 
-def getTotalSnaps(total=False):
+def getTotalSnaps(hs_db_path, total=False):
     """Prints the total number of Headline Snaps in the database.
 
     args
+        hs_db_path : the path to the headline snap database
         total : boolean value from -t args option
 
     returns
@@ -61,10 +63,10 @@ def getTotalSnaps(total=False):
     if total:
         print("Fetching total Headline Snap count ...")
         sleep(1)
-        db_file = r"./data/db/hs.db"
+        
         # connect to the database
         try:
-            con = sqlite3.connect(db_file)
+            con = sqlite3.connect(hs_db_path)
         except sqlite3.Error as e:
             print(e)
             return
@@ -79,10 +81,11 @@ def getTotalSnaps(total=False):
     else:
         return
 
-def getRandomSnap(number):
+def getRandomSnap(hs_db_path, number):
     """Prints NUMBER random Headline Snaps from the database.
 
     args
+        hs_db_path : the path to the headline snap database
         number : int value from -r args option
 
     returns
@@ -91,10 +94,10 @@ def getRandomSnap(number):
     if number != None:
         print("Fetching", number, "random {} ...\n".format("Headline Snap" if number == 1 else "Headline Snaps"))
         sleep(1)
-        db_file = r"./data/db/hs.db"
+
         # connect to the database
         try:
-            con = sqlite3.connect(db_file)
+            con = sqlite3.connect(hs_db_path)
         except sqlite3.Error as e:
             print(e)
             return

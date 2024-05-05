@@ -25,6 +25,9 @@ def updateTokens(token_db_path):
     # recreate an empty token db
     createTokenDatabase(token_db_path)
 
+    print("Updating token database with counts ...")
+    sleep(1)
+
     # then iterate over every snap in the corpus and tokenize them and add them to the token db
     with open("./data/corpus.txt", "r", encoding="utf-8") as corpus_file:
         corpus = corpus_file.read().splitlines()
@@ -36,6 +39,9 @@ def updateTokens(token_db_path):
                 token = key
                 count = tokenized_snap[key]
                 addToTokenDatabase(token_db_path, token, count)
+
+    print("Done.")
+    return
     
                 
 

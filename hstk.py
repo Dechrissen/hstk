@@ -5,15 +5,16 @@ from Trigrams import *
 from Visualizer import *
 from argparse import ArgumentParser
 
-# this only runs if "initialized":false in cache.json
-# so if the project has been initialized once, it won't run again
-initialize()
-
 # define some relevant paths
 hs_db_path = r"./data/db/hs.db"
 token_db_path = r"./data/db/tokens.db"
 src_images_path = r"./data/src/raw"
 src_text_path=r"./data/src/text"
+corpus_path = r"./data/corpus.txt" # this won't exist until dumpCorpus() function is run
+
+# this only runs if "initialized":false in cache.json
+# so if the project has been initialized once, it won't run again
+initialize(hs_db_path, token_db_path)
 
 # ARGUMENT PARSING
 # ----------------
@@ -27,12 +28,12 @@ parser = ArgumentParser(
 # add subparsers for specific functions, example: tokenizer-related ones
 subparsers = parser.add_subparsers(
     # set dest="subparser" so that we can access it in the Namespace later
-    title="subcommands", dest="subparser", help="toolkit subcommands"
+    title="subcommands", dest="subparser", help=""
 )
 
 # MAIN PARSER: Define options
 # add : stores True when used
-parser.add_argument("-a", "--add", action="store_true", help="adds the current contents of the files in /data/src/text to the database")
+parser.add_argument("-a", "--add", action="store_true", help="add the current contents of the files in /data/src/text to the database")
 # total: stores True when used
 parser.add_argument("-t", "--total", action="store_true", help="display the total number of headline snaps in the databse")
 # random : takes one optional argument of type int, where its default is 1 (const=1)
@@ -42,7 +43,7 @@ parser.add_argument("-c", "--convert", action="store_true", help="convert headli
 # dump : stores True when used
 parser.add_argument("-x", "--export", action="store_true", help="dump all headline snaps from the database to a text file at /data/dump.txt")
 # search : takes one mandatory argument of type str
-parser.add_argument("-s", "--search", metavar=("STR"), type=str, help="search the headline snap database for snaps containing STR (in quotes)")
+parser.add_argument("-s", "--search", metavar=("STR"), type=str, help="search the headline snap database for entries containing STR (in quotes)")
 # delete : stores True when used
 parser.add_argument("-d", "--delete", action="store_true", help="delete all data from the headline snap and token databases")
 
@@ -64,9 +65,9 @@ visualizer_parser.add_argument("-w", "--word_cloud", action="store_true", help="
 args = parser.parse_args()
 
 # run `args` through functions to check each argument
-getTotalSnaps(args.total)
-getRandomSnap(args.random)
-searchSnaps(args.search)
+getTotalSnaps(hs_db_path, args.total)
+getRandomSnap(hs_db_path, args.random)
+searchSnaps(hs_db_path, args.search)
 if args.convert:
     convertDirectory(src_images_path)
     addToSnapDatabase(hs_db_path, src_text_path)
@@ -86,7 +87,7 @@ if args.delete:
 if args.subparser == "tokenizer":
     # check if individual subparser options were used
     if args.update_tokens:
-        dumpCorpus() # so the updateTokens() function has an up-to-date corpus to work with
+        dumpCorpus(hs_db_path) # so the updateTokens() function has an up-to-date corpus to work with
         updateTokens(token_db_path)
     if args.query_tokens:
         token = cleanText(args.query_tokens)
@@ -103,14 +104,14 @@ if args.subparser == "tokenizer":
 if args.subparser == "trigrams":
     # check if individual subparser options were used
     if args.generate:
-        dumpCorpus() # so the trainTrigramModel() function has an up-to-date corpus to work with
+        dumpCorpus(hs_db_path) # so the trainTrigramModel() function has an up-to-date corpus to work with
         trigram_model = trainTrigramModel(corpus_path)
         print('\t' + generateSentence(trigram_model, corpus_path))
 
 if args.subparser == "visualizer":
     # check if individual subparser options were used
     if args.word_cloud:
-        dumpCorpus() # so the generateWordCloud() function has an up-to-date corpus to work with
+        dumpCorpus(hs_db_path) # so the generateWordCloud() function has an up-to-date corpus to work with
         generateWordCloud()
 
 # DEBUG tokenizer and clean function test
@@ -125,5 +126,5 @@ sleep(1)
 #test_trigram_model = trainTrigramModel(r"./data/test_corp.txt")
 #print(generateSentence(test_trigram_model, r"./data/test_corp.txt"))
 
-print("Exiting ...")
+print("\nExiting ...")
 raise SystemExit(1)

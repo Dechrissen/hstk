@@ -7,12 +7,13 @@ import json
 from time import sleep
 
 
-def initialize():
+def initialize(hs_db_path, token_db_path):
     """Initializes the project for use: creates local directories, creates 
     empty db files.
 
     args
-        null
+        hs_db_path : the path to the headline snap database
+        token_db_path : the path to the token database
 
     returns
         null
@@ -50,10 +51,8 @@ def initialize():
         createDirectory(dir)
 
     # create the database files
-    hsdb_file = r"./data/db/hs.db"
-    createSnapDatabase(hsdb_file)
-    token_db_file = r"./data/db/tokens.db"
-    createTokenDatabase(token_db_file)
+    createSnapDatabase(hs_db_path)
+    createTokenDatabase(token_db_path)
 
     # set cache so initialize doesn't run anymore
     cache["initialized"] = True
@@ -391,21 +390,21 @@ def cleanText(text):
 
     return text
 
-def dumpCorpus():
+def dumpCorpus(hs_db_path):
     '''Dumps all Headline Snaps in the database to a text file after running them
     through the cleanText() function. For use with language model training functions.
     
     args
-        null
+        hs_db_path : the path to the headline snap database
 
     returns
         null
     '''
     all_cleaned_snaps = []
-    db_file = r"./data/db/hs.db"
+    
     # connect to the database
     try:
-        con = sqlite3.connect(db_file)
+        con = sqlite3.connect(hs_db_path)
     except sqlite3.Error as e:
         print(e)
         return
@@ -430,11 +429,11 @@ def dumpCorpus():
     con.close()
     return
 
-def dumpAll():
+def dumpAll(hs_db_path):
     '''Dumps all Headline Snaps in the database to a text file.
 
     args
-        null
+        hs_db_path : the path to the headline snap database
 
     returns
         null
@@ -442,10 +441,9 @@ def dumpAll():
     # initialize empty list to store all db snaps
     all_snaps = []
 
-    db_file = r"./data/db/hs.db"
     # connect to the database
     try:
-        con = sqlite3.connect(db_file)
+        con = sqlite3.connect(hs_db_path)
     except sqlite3.Error as e:
         print(e)
         return
