@@ -25,7 +25,7 @@ def initialize(hs_db_path, token_db_path):
     except FileNotFoundError:
         # create cache file if it doesn't exist, initialize to false
         data = json.loads("""{"initialized":false}""")
-        with open("cache.json", "w") as jsonFile:
+        with open("cache.json", "rw") as jsonFile:
             json.dump(data, jsonFile)
             cache = json.load(jsonFile)
         print("Cache file created.")
