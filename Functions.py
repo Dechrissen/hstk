@@ -27,6 +27,7 @@ def initialize(hs_db_path, token_db_path):
         data = json.loads("""{"initialized":false}""")
         with open("cache.json", "w") as jsonFile:
             json.dump(data, jsonFile)
+            cache = json.load(jsonFile)
         print("Cache file created.")
 
     
