@@ -79,7 +79,7 @@ command | flag | description
 add | `-a` | adds the current contents of the files in `/data/src/text` (newline-separated) to the database
 total | `-t` | output the total number of Headline Snaps in the database
 random | `-r` | print a random Headline Snap from the database
-convert | `-c` | convert the Headline Snap image files in `/data/src/raw` to text via OCR and output them to `/data/text/ocr_output.txt`
+convert | `-c` | convert the Headline Snap image files in `/data/src/raw` to text via OCR and output them to `/data/text/ocr_output.txt`, then adds all contents of the `/data/text` directory to the database
 export | `-x` | dump all Headline Snaps from the database to a text file at `/data/dump.txt`
 search | `-s` | query the database for Headline Snaps containing a provided search phrase
 delete | `-d` | delete all data from the Headline Snap and token databases

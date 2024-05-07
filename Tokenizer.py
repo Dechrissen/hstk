@@ -25,7 +25,7 @@ def updateTokens(token_db_path):
     # recreate an empty token db
     createTokenDatabase(token_db_path)
 
-    print("Updating token database with counts ...")
+    print("Updating token database with counts ... this may take a while.")
     sleep(1)
 
     # then iterate over every snap in the corpus and tokenize them and add them to the token db

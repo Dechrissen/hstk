@@ -28,7 +28,7 @@ def generateWordCloud():
     wl = WordNetLemmatizer()
     
     corpus = ''
-    with open("./data/corpus.txt", "r") as f:
+    with open("./data/corpus.txt", "r", encoding='utf-8') as f:
         corpus = f.readlines()
 
     text_data = ''

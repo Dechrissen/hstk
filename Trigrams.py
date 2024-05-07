@@ -13,9 +13,9 @@ def trainTrigramModel(corpus_path):
     returns
         model : a dictionary containing the trigram model
     '''
-    # TODO: try making this 0?
-    # Smoothing of 0.01 to handle unattested words in test data 
-    model = defaultdict(lambda: defaultdict(lambda: 0.01))
+    # smoothing value to handle unattested words in test data (I think keep this zero for best model quality)
+    smoothing = 0.0
+    model = defaultdict(lambda: defaultdict(lambda: smoothing))
 
     # TODO make this use headline snap data somehow, not iterate through txt files in a directory
 
