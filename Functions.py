@@ -90,8 +90,8 @@ def tweakImage(image_file):
     # get the dimensions of the image
     width, height = image.size
 
-    # set the amount of top & bottom to trim off (20% here)
-    trim = .2 * height
+    # set the amount of top & bottom to trim off (15% here)
+    trim = .15 * height
 
     # crop the image
     crop_region = (0, trim, width, (height - trim))
@@ -240,6 +240,8 @@ def addToSnapDatabase(db_file, src_text_dir):
             with open(os.path.join(src_text_dir,file), mode='r', encoding='utf-8') as f:
                 for snap in f:
                     snap = snap.split('\n')[0]
+                    # TODO simple fix for pipe --> I correction for now. change this to something better eventually
+                    snap = snap.replace('|', 'I')
                     # add snap to the table (note the comma after snap to make it a tuple)
                     cur.execute('''INSERT OR IGNORE INTO headlines(text)
                                 VALUES(?)''', (snap,))
@@ -365,7 +367,7 @@ def isOddSnap(snap):
     returns
         bool
     '''
-    oddities = ['(', ')', '!']
+    oddities = ['(', ')', '!', '@', '...', '|']
     for symbol in oddities:
         if symbol in snap:
             return True
@@ -383,17 +385,19 @@ def cleanText(text):
     '''
     text = text.lower()
     # define filters to remove from the string
-    filters = [',', '.', ')', '(', '[', ']', '{', '}', '<', '>', '!', '?', ';', ':', '"']
+    filters = [',', '.', ')', '(', '[', ']', '{', '}', '<', '>', '!', '?', ';', ':', '"', '@']
 
     # replace instances of filters with empty string
     for filter in filters:
         text = text.replace(filter, '')
+        # also correct pipes to 'I', which seems to be a problem with the OCRing sometimes
+        text = text.replace('|', 'I')
 
     return text
 
 def dumpCorpus(hs_db_path):
-    '''Dumps all Headline Snaps in the database to a text file after running them
-    through the cleanText() function. For use with language model training functions.
+    '''Dumps all Headline Snaps in the database to a text file after cleaning them a bit. 
+    For use with language model training functions.
     
     args
         hs_db_path : the path to the headline snap database
@@ -415,7 +419,8 @@ def dumpCorpus(hs_db_path):
 
     for snap in res.fetchall():
         # clean snaps from fetchall output
-        snap = snap[0].strip(' ') + '\n'
+        #snap = snap[0].strip(' ') + '\n'
+        snap = cleanText(snap[0]).strip(' ') + '\n'
         # check if the snap is 'odd', and thus shouldn't be in the corpus for training
         if not isOddSnap(snap):
             # if not, append cleaned snap to all_cleaned_snaps list

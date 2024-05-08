@@ -1,6 +1,6 @@
 # hstk – Headline Snap Toolkit
 
-`hstk` provides a collection of tools for creating a database of fabricated news headlines ([Headline Snaps](./assets/WHAT.md)) and interfacing with the database. Some of its built-in tools include language modeling, data analysis, data visualization tools. It can also synthesize new language data based on a trigram model.
+`hstk` provides a collection of tools for creating a database of fabricated news headlines ([Headline Snaps](./assets/WHAT.md)) and interfacing with the database. Some of its built-in tools include language modeling, data analysis, data visualization tools. It can also synthesize new language data (news headlines) based on a trigram model.
 
 ## Table of Contents
 
