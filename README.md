@@ -70,6 +70,17 @@ The source data is what's used to generate the entries in the database files (e.
 
 Similarly, newline-separated files containing Headline Snaps as text can be added to `/data/src/text` at any time, with a `.txt` extension. Then `python hstk.py -a` will add those to the database.
 
+### Using the included sample dataset
+
+A sample dataset of 24 image files is included in the repository. By default, they will not be used. To include them in your database, simply copy them from `/sample` to `/data/src/raw` (after running the initial setup command):
+```
+cp sample/* /data/src/raw/
+```
+Then, to convert all of these images and add them to your database, run:
+```
+python hstk.py --convert
+```
+
 ### Features
 
 There are several commands at your disposal in this toolkit.
