@@ -4,3 +4,4 @@ cache.json
 config.json
 requirements.in
 scripts/a9t9.txt
+.venv

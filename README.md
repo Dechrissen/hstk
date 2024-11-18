@@ -4,27 +4,48 @@
 
 ## Table of Contents
 
+- [Setting up Tesseract](#installing-and-setting-up-the-tesseract-executable)
 - [Installation](#installation)
 - [Setup](#setup)
 - [Usage and features](#usage)
 - [Converting non-compliant Headline Snaps](#converting-non-compliant-headline-snaps)
 
 
-## Installation
+## Installing and setting up the Tesseract executable
 
-First, clone this repository (or fork your own copy, then clone that).
+The Tesseract executable (engine) is required for the OCR backend in this toolkit. It is available on both Windows and Linux.
+- [Windows installer](https://github.com/UB-Mannheim/tesseract/wiki)
+    - make sure you install the executable in this location exactly: `C:\Program Files\Tesseract-OCR\tesseract.e    xe`
+- [Linux instructions](https://tesseract-ocr.github.io/tessdoc/Installation.html)
+    - no special installation instructions; just install via your distro's package manager
+    - ensure something like the following is added to your PATH or `.bashrc`:
+    ```
+    # TESSERACT path variables
+    export TESSERACT_PATH="/usr/bin/tesseract"
+    export TESSDATA_PREFIX="/usr/share/tesseract-ocr/5/tessdata/"
+    ```
+    - `tessdata` might be somewhere slightly different, so just make sure it matches the actual location
 
-```
+## Installation                                                                                                 
+Clone this repository (or fork your own copy, then clone that).
+                                                                                                                ```
 git clone git@github.com:Dechrissen/hstk.git
 ```
-
 Alternatively, you can download the latest release's source code from the [releases](https://github.com/Dechrissen/hstk/releases) section of this repository. In that case, you'd need to extract it.
 
 ## Setup
 
-Ensure you have Python 3 installed.
+Ensure you have Python 3 and `python3-venv` installed.  
+On Debian, for example, that can be achieved with: `sudo apt install python3-venv`
 
 `cd` to the project directory.
+
+Set up a virtual environment (calling it `.venv` here) and then activate it. It can be deactivated after you're done using the toolkit with `deactivate`.
+
+```
+python -m venv .venv
+source .venv/bin/activate
+```
 
 To install dependencies, run:
 
@@ -34,15 +55,7 @@ pip install -r requirements.txt
 
 (For this to work on Windows, you might need to prefix the command with `python -m`, i.e. `python -m pip install -r requirements.txt`).
 
-### Installing the Tesseract executable
-
-The Tesseract executable (engine) is required for the OCR backend in this toolkit. It is available on both Windows and Linux.
-
-- [Windows installer](https://github.com/UB-Mannheim/tesseract/wiki)
-    - make sure you install the executable in this location exactly: `C:\Program Files\Tesseract-OCR\tesseract.exe`
-- [Linux instructions](https://tesseract-ocr.github.io/tessdoc/Installation.html)
-    - no special location instructions; just install via your distro's package manager
-
+### First-time setup
 To perform the first-time setup, run:
 ```
 python hstk.py
