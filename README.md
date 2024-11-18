@@ -1,6 +1,6 @@
 # hstk – Headline Snap Toolkit
 
-`hstk` provides a collection of tools for creating a database of fabricated news headlines ([Headline Snaps](./assets/WHAT.md)) and interfacing with the database. Some of its built-in tools include language modeling, data analysis, data visualization tools. It can also synthesize new language data (news headlines) based on a trigram model.
+`hstk` provides a collection of tools for creating and interfacing with a database of fabricated news headlines ([Headline Snaps](./assets/WHAT.md)). Some of its built-in tools include language modeling, data analysis, and data visualization tools. It can also synthesize new language data (news headlines) based on a trigram model.
 
 ## Table of Contents
 
@@ -17,13 +17,13 @@ The Tesseract executable (engine) is required for the OCR backend in this toolki
 - [Windows installer](https://github.com/UB-Mannheim/tesseract/wiki)
     - make sure you install the executable in this location exactly: `C:\Program Files\Tesseract-OCR\tesseract.exe`
 - [Linux instructions](https://tesseract-ocr.github.io/tessdoc/Installation.html)
-    - no special installation instructions; just install via your distro's package manager
+    - no special installation instructions; just install via your distro's package manager (on Debian, that's `sudo apt install tesseract-ocr`)
     - ensure something like the following is added to your PATH or `.bashrc`:
     ```
     export TESSERACT_PATH="/usr/bin/tesseract"
     export TESSDATA_PREFIX="/usr/share/tesseract-ocr/5/tessdata/"
     ```
-    - `tessdata` might be somewhere slightly different, so just make sure it matches the actual location
+    - `tessdata` might be somewhere slightly different, so just make sure it matches the actual location on your machine
 
 ## Installation                                                                                                 
 Clone this repository (or fork your own copy, then clone that).
