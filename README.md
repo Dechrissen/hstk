@@ -15,12 +15,11 @@
 
 The Tesseract executable (engine) is required for the OCR backend in this toolkit. It is available on both Windows and Linux.
 - [Windows installer](https://github.com/UB-Mannheim/tesseract/wiki)
-    - make sure you install the executable in this location exactly: `C:\Program Files\Tesseract-OCR\tesseract.e    xe`
+    - make sure you install the executable in this location exactly: `C:\Program Files\Tesseract-OCR\tesseract.exe`
 - [Linux instructions](https://tesseract-ocr.github.io/tessdoc/Installation.html)
     - no special installation instructions; just install via your distro's package manager
     - ensure something like the following is added to your PATH or `.bashrc`:
     ```
-    # TESSERACT path variables
     export TESSERACT_PATH="/usr/bin/tesseract"
     export TESSDATA_PREFIX="/usr/share/tesseract-ocr/5/tessdata/"
     ```
@@ -28,9 +27,11 @@ The Tesseract executable (engine) is required for the OCR backend in this toolki
 
 ## Installation                                                                                                 
 Clone this repository (or fork your own copy, then clone that).
-                                                                                                                ```
+
+```
 git clone git@github.com:Dechrissen/hstk.git
 ```
+
 Alternatively, you can download the latest release's source code from the [releases](https://github.com/Dechrissen/hstk/releases) section of this repository. In that case, you'd need to extract it.
 
 ## Setup
