@@ -36,7 +36,7 @@ Alternatively, you can download the latest release's source code from the [relea
 
 ## Setup
 
-Ensure you have Python 3 and `python3-venv` installed.  
+Ensure you have Python 3.12 and `python3-venv` installed.  
 On Debian, for example, that can be achieved with: `sudo apt install python3-venv`
 
 `cd` to the project directory.
